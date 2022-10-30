@@ -1,0 +1,163 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "servarr.fullname" . }}
+  labels:
+{{ include "servarr.labels" . | indent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "servarr.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "servarr.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+    {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      serviceAccountName: {{ template "servarr.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      initContainers:
+        - name: init-config
+          securityContext:
+            {{- toYaml .Values.init.securityContext | nindent 12 }}
+          image: "{{ .Values.init.image.repository }}:{{ .Values.init.image.tag }}"
+          imagePullPolicy: {{ .Values.init.image.pullPolicy }}
+          command: [
+            "cp", "/tmp/config.xml", "/config/config.xml",
+            "&&",
+            "chmod", "666", "/config/config.xml"
+          ]
+          resources:
+            {{- .Values.init.resources | toYaml | nindent 12 }}
+          volumeMounts:
+            - name: config-file
+              mountPath: /tmp/config.xml
+              subPath: config.xml
+            - name: config
+              mountPath: /config
+      {{- with .Values.extraInitContainers }}
+        {{ . | toYaml | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: {{ include "servarr.name" . }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: TZ
+              value: '{{ .Values.timezone }}'
+            - name: PGID
+              value: '1000'
+            - name: PUID
+              value: '1000'
+            {{- range .Values.extraEnv }}
+            - name: {{ .name }}
+              {{- if .value}}
+              value: "{{ .value }}"
+              {{- else if .valueFrom}}
+              valueFrom:
+                {{- toYaml .valueFrom | nindent 16 }}
+              {{- end }}
+            {{- end }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.port }}
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /metrics
+              port: metrics
+          readinessProbe:
+            httpGet:
+              path: /metrics
+              port: metrics
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: config
+              mountPath: /config
+      {{- if .Values.metrics.enabled }}
+        - name: {{ include "servarr.name" . }}-exporter
+          securityContext:
+            {{- toYaml .Values.metrics.securityContext | nindent 12 }}
+          image: "{{ .Values.metrics.image.repository }}:{{ .Values.metrics.image.tag }}"
+          imagePullPolicy: {{ .Values.metrics.image.pullPolicy }}
+          args:
+            - {{ .Values.nameOverride | default .Release.Name }}
+          env:
+            - name: PORT
+              value: '{{ .Values.metrics.service.port }}'
+            - name: URL
+              value: 'http://localhost:{{ .Values.service.port }}'
+            - name: APIKEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.metrics.secretName }}
+                  key: {{ .Values.metrics.secretKey }}
+                  optional: false
+            {{- range .Values.metrics.extraEnv }}
+            - name: {{ .name }}
+              {{- if .value}}
+              value: "{{ .value }}"
+              {{- else if .valueFrom}}
+              valueFrom:
+                {{- toYaml .valueFrom | nindent 16 }}
+              {{- end }}
+            {{- end }}
+          ports:
+            - name: metrics
+              containerPort: {{ .Values.metrics.service.port }}
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: metrics
+            failureThreshold: 5
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: metrics
+            failureThreshold: 5
+            periodSeconds: 10
+          resources:
+            {{- toYaml .Values.metrics.resources | nindent 12 }}
+      {{- end }}
+      volumes:
+        - name: config-file
+          secret:
+            secretName: {{ .Values.configSecretName }}
+            optional: false
+        - name: config
+          emptyDir: {}
+      {{- range .Values.extraConfigmapMounts }}
+        - name: {{ .name }}
+          configMap:
+            name: {{ .name }}
+            optional: {{ .optional }}
+      {{- end }}
+      {{- range .Values.extraSecretMounts }}
+        - name: {{ .name }}
+          secret:
+            secretName: {{ .name }}
+            optional: {{ .optional }}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
