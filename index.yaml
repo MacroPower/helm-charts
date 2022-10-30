@@ -17,4 +17,21 @@ entries:
     urls:
     - https://github.com/MacroPower/helm-charts/releases/download/example-v2-0.1.0/example-v2-0.1.0.tgz
     version: 0.1.0
-generated: "2022-10-28T23:00:59.866840432Z"
+  twitch-predictions-recorder:
+  - apiVersion: v2
+    appVersion: 0.2.0
+    created: "2022-10-30T03:51:10.414990163Z"
+    description: A Helm chart for Kubernetes
+    digest: 235af62d8cd573c5f3ea51b1fd44d99486eb713d736c5e0cd6af49ac1a2fbe11
+    home: https://jacobcolvin.com/
+    maintainers:
+    - email: jacobcolvin1@gmail.com
+      name: MacroPower
+    name: twitch-predictions-recorder
+    sources:
+    - https://github.com/MacroPower/twitch_predictions_recorder
+    type: application
+    urls:
+    - https://github.com/MacroPower/helm-charts/releases/download/twitch-predictions-recorder-0.1.0/twitch-predictions-recorder-0.1.0.tgz
+    version: 0.1.0
+generated: "2022-10-30T03:51:10.414999864Z"
