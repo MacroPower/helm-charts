@@ -1,0 +1,12 @@
+apiVersion: v2
+name: twitch-predictions-recorder
+appVersion: '0.2.0'
+version: '0.1.0'
+description: A Helm chart for Kubernetes
+home: https://jacobcolvin.com/
+sources:
+  - https://github.com/MacroPower/twitch_predictions_recorder
+maintainers:
+  - name: MacroPower
+    email: jacobcolvin1@gmail.com
+type: application
