@@ -1,0 +1,98 @@
+# Default values for example.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+nameOverride: 'radarr'
+fullnameOverride: ''
+
+image:
+  repository: linuxserver/radarr
+  tag: '4.2.4'
+  pullPolicy: IfNotPresent
+
+imagePullSecrets: []
+
+configSecretName: radarr-config
+
+service:
+  type: ClusterIP
+  port: 7878
+
+timezone: America/New_York
+
+metrics:
+  enabled: false
+
+  secretName: radarr-credentials
+  secretKey: RADARR_API_KEY
+
+  service:
+    type: ClusterIP
+    port: 9707
+
+  image:
+    repository: ghcr.io/onedr0p/exportarr
+    tag: v1.1.0
+    pullPolicy: IfNotPresent
+
+  imagePullSecrets: []
+  securityContext: {}
+  extraEnv: []
+  resources: {}
+
+serviceMonitor:
+  enabled: false
+
+init:
+  image:
+    repository: busybox
+    tag: '1.35.0'
+    pullPolicy: IfNotPresent
+
+  imagePullSecrets: []
+  securityContext: {}
+  extraEnv: []
+  resources: {}
+
+extraEnv: []
+
+extraInitContainers: []
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name:
+
+podSecurityContext:
+  {}
+  # fsGroup: 2000
+
+securityContext:
+  {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+resources:
+  {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
