@@ -20,6 +20,24 @@ entries:
   servarr:
   - apiVersion: v2
     appVersion: 4.0.0
+    created: "2022-10-31T03:05:07.043011923Z"
+    description: A Helm chart for Kubernetes
+    digest: 697f84fd18da41cc10428d2651223458c54bc7ab01d62e7309547a72fe749cd9
+    home: https://jacobcolvin.com/
+    maintainers:
+    - email: jacobcolvin1@gmail.com
+      name: MacroPower
+    name: servarr
+    sources:
+    - https://github.com/Sonarr/Sonarr
+    - https://github.com/Radarr/Radarr
+    - https://github.com/Prowlarr/Prowlarr
+    type: application
+    urls:
+    - https://github.com/MacroPower/helm-charts/releases/download/servarr-0.1.1/servarr-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
+    appVersion: 4.0.0
     created: "2022-10-30T23:03:43.447046122Z"
     description: A Helm chart for Kubernetes
     digest: f3a45613a1f3657185ea777c4f4a6fc469bf8ed5a38ca5200706f8b2f385c469
@@ -53,4 +71,4 @@ entries:
     urls:
     - https://github.com/MacroPower/helm-charts/releases/download/twitch-predictions-recorder-0.1.0/twitch-predictions-recorder-0.1.0.tgz
     version: 0.1.0
-generated: "2022-10-30T23:03:43.447052222Z"
+generated: "2022-10-31T03:05:07.043018923Z"
