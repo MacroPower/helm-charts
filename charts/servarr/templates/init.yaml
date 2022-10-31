@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "servarr.fullname" . }}-init
+  labels:
+    app.kubernetes.io/name: {{ include "servarr.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/component: scripts
+data:
+  init.sh: |
+    cp /tmp/config.xml /config/config.xml
+    chmod 666 /config/config.xml

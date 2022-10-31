@@ -29,14 +29,12 @@ spec:
             {{- toYaml .Values.init.securityContext | nindent 12 }}
           image: "{{ .Values.init.image.repository }}:{{ .Values.init.image.tag }}"
           imagePullPolicy: {{ .Values.init.image.pullPolicy }}
-          command: [
-            "cp", "/tmp/config.xml", "/config/config.xml",
-            "&&",
-            "chmod", "666", "/config/config.xml"
-          ]
+          command: ["sh", "/scripts/init.sh"]
           resources:
             {{- .Values.init.resources | toYaml | nindent 12 }}
           volumeMounts:
+            - name: init
+              mountPath: /scripts
             - name: config-file
               mountPath: /tmp/config.xml
               subPath: config.xml
@@ -137,6 +135,10 @@ spec:
             optional: false
         - name: config
           emptyDir: {}
+        - name: init
+          configMap:
+            name: {{ include "servarr.fullname" . }}-init
+            optional: false
       {{- range .Values.extraConfigmapMounts }}
         - name: {{ .name }}
           configMap:
