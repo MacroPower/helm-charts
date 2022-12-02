@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "rclone.fullname" . }}-init
+  labels:
+    app.kubernetes.io/name: {{ include "rclone.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/component: scripts
+data:
+  init.sh: |
+    cp /tmp/rclone.conf /config/rclone/rclone.conf
+    chmod 666 /config/rclone/rclone.conf
