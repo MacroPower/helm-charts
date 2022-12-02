@@ -17,6 +17,23 @@ entries:
     urls:
     - https://github.com/MacroPower/helm-charts/releases/download/example-v2-0.1.0/example-v2-0.1.0.tgz
     version: 0.1.0
+  rclone:
+  - apiVersion: v2
+    appVersion: 1.60.1
+    created: "2022-12-02T23:11:06.680508816Z"
+    description: A Helm chart for Kubernetes
+    digest: 36b21adec6eedbc82d35d45aa0082d6bc606b5444e4186e09777a88791bb7b64
+    home: https://jacobcolvin.com/
+    maintainers:
+    - email: jacobcolvin1@gmail.com
+      name: MacroPower
+    name: rclone
+    sources:
+    - https://github.com/rclone/rclone
+    type: application
+    urls:
+    - https://github.com/MacroPower/helm-charts/releases/download/rclone-0.1.0/rclone-0.1.0.tgz
+    version: 0.1.0
   servarr:
   - apiVersion: v2
     appVersion: 4.0.0
@@ -89,4 +106,4 @@ entries:
     urls:
     - https://github.com/MacroPower/helm-charts/releases/download/twitch-predictions-recorder-0.1.0/twitch-predictions-recorder-0.1.0.tgz
     version: 0.1.0
-generated: "2022-10-31T03:12:26.001960944Z"
+generated: "2022-12-02T23:11:06.680519216Z"
