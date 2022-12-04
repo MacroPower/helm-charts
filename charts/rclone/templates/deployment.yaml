@@ -49,11 +49,12 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          command: rcd
+          command: ["rclone"]
           args:
+            - rcd
             - --rc-web-gui
             - --rc-web-gui-no-open-browser
-            - --rc-addr :{{ .Values.service.port }}
+            - --rc-addr=:{{ .Values.service.port }}
           {{- with .Values.extraArgs }}
             {{- . | toYaml | nindent 12 }}
           {{- end }}

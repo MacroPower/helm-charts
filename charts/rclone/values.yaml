@@ -2,7 +2,7 @@ nameOverride: ''
 fullnameOverride: ''
 
 image:
-  repository: linuxserver/rclone
+  repository: rclone/rclone
   tag: '1.60.1'
   pullPolicy: IfNotPresent
 
