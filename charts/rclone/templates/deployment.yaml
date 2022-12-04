@@ -49,7 +49,7 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          command: rcd
+          command: ["rcd"]
           args:
             - --rc-web-gui
             - --rc-web-gui-no-open-browser
