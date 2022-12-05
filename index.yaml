@@ -17,6 +17,25 @@ entries:
     urls:
     - https://github.com/MacroPower/helm-charts/releases/download/example-v2-0.1.0/example-v2-0.1.0.tgz
     version: 0.1.0
+  local-volume-static-provisioner:
+  - apiVersion: v2
+    appVersion: 2.5.0
+    created: "2022-12-05T06:43:30.281630702Z"
+    description: Helm chart for the SIG Storage Local Volume Static Provisioner.
+    digest: ac209ffda9d0ed12c863b749b7d43c2df7e60865bfb36135f06aac729080740b
+    home: https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/
+    icon: https://avatars.githubusercontent.com/u/36015203?s=200&v=4
+    keywords:
+    - storage
+    - local
+    - volume
+    name: local-volume-static-provisioner
+    sources:
+    - https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/
+    type: application
+    urls:
+    - https://github.com/MacroPower/helm-charts/releases/download/local-volume-static-provisioner-1.0.0/local-volume-static-provisioner-1.0.0.tgz
+    version: 1.0.0
   rclone:
   - apiVersion: v2
     appVersion: 1.60.1
@@ -154,4 +173,4 @@ entries:
     urls:
     - https://github.com/MacroPower/helm-charts/releases/download/twitch-predictions-recorder-0.1.0/twitch-predictions-recorder-0.1.0.tgz
     version: 0.1.0
-generated: "2022-12-04T22:57:15.448234935Z"
+generated: "2022-12-05T06:43:30.281649103Z"
