@@ -172,6 +172,23 @@ entries:
     urls:
     - https://github.com/MacroPower/helm-charts/releases/download/servarr-0.1.0/servarr-0.1.0.tgz
     version: 0.1.0
+  transmission:
+  - apiVersion: v2
+    appVersion: 3.00-r6-ls146
+    created: "2022-12-18T22:04:26.015260076Z"
+    description: A Helm chart for Kubernetes
+    digest: 3dd84e8cba18b43f769f19674ced4cc9557b6eeaef73dac619d530e8680d0207
+    home: https://jacobcolvin.com/
+    maintainers:
+    - email: jacobcolvin1@gmail.com
+      name: MacroPower
+    name: transmission
+    sources:
+    - https://github.com/transmission/transmission
+    type: application
+    urls:
+    - https://github.com/MacroPower/helm-charts/releases/download/transmission-0.1.0/transmission-0.1.0.tgz
+    version: 0.1.0
   twitch-predictions-recorder:
   - apiVersion: v2
     appVersion: 0.2.0
@@ -189,4 +206,4 @@ entries:
     urls:
     - https://github.com/MacroPower/helm-charts/releases/download/twitch-predictions-recorder-0.1.0/twitch-predictions-recorder-0.1.0.tgz
     version: 0.1.0
-generated: "2022-12-18T01:12:16.29862632Z"
+generated: "2022-12-18T22:04:26.015281176Z"
