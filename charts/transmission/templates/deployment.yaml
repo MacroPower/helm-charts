@@ -61,16 +61,13 @@ spec:
           volumeMounts:
             - mountPath: /config
               name: config
+              subPath: config
             - mountPath: /watch
               name: watch
-            {{- if .Values.persistence.downloads.enabled }}
+              subPath: watch
             - mountPath: /downloads
               name: downloads
-            {{- end }}
-            {{- range .Values.persistence.extraClaims }}
-            - name: {{ .name }}
-              mountPath: /downloads/{{ .name }}
-            {{- end }}
+              subPath: downloads
       volumes:
         - name: config
         {{- if .Values.persistence.config.enabled }}
@@ -92,11 +89,6 @@ spec:
             claimName: {{ .Values.persistence.watch.existingClaim | default (printf "%s-%s" (include "transmission.fullname" .) "watch") }}
         {{- else }}
           emptyDir: {}
-        {{- end }}
-        {{- range .Values.persistence.extraClaims }}
-        - name: {{ .name }}
-          persistentVolumeClaim:
-            claimName: {{ .name }}
         {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
