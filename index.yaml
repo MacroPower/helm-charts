@@ -175,6 +175,22 @@ entries:
   transmission:
   - apiVersion: v2
     appVersion: 3.00-r6-ls146
+    created: "2022-12-18T23:51:11.200642827Z"
+    description: A Helm chart for Kubernetes
+    digest: 52ec2a54a9e9edf9cacac9314036ecc1b6ba1e6bd716e6f23fc9598aea01c9c3
+    home: https://jacobcolvin.com/
+    maintainers:
+    - email: jacobcolvin1@gmail.com
+      name: MacroPower
+    name: transmission
+    sources:
+    - https://github.com/transmission/transmission
+    type: application
+    urls:
+    - https://github.com/MacroPower/helm-charts/releases/download/transmission-0.3.0/transmission-0.3.0.tgz
+    version: 0.3.0
+  - apiVersion: v2
+    appVersion: 3.00-r6-ls146
     created: "2022-12-18T23:30:23.989752456Z"
     description: A Helm chart for Kubernetes
     digest: 45c7dd404b77872cb714f37bbfd199968e7cc522b20a085455b59622a2e1e54f
@@ -222,4 +238,4 @@ entries:
     urls:
     - https://github.com/MacroPower/helm-charts/releases/download/twitch-predictions-recorder-0.1.0/twitch-predictions-recorder-0.1.0.tgz
     version: 0.1.0
-generated: "2022-12-18T23:30:23.989901354Z"
+generated: "2022-12-18T23:51:11.200670827Z"
