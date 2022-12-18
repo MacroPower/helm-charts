@@ -60,33 +60,19 @@ spec:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
             - mountPath: /config
-              name: config
+              name: data
               subPath: config
             - mountPath: /watch
-              name: watch
+              name: data
               subPath: watch
             - mountPath: /downloads
-              name: downloads
+              name: data
               subPath: downloads
       volumes:
-        - name: config
-        {{- if .Values.persistence.config.enabled }}
+        - name: data
+        {{- if .Values.persistence.enabled }}
           persistentVolumeClaim:
-            claimName: {{ .Values.persistence.config.existingClaim | default (printf "%s-%s" (include "transmission.fullname" .) "config") }}
-        {{- else }}
-          emptyDir: {}
-        {{- end }}
-        - name: downloads
-        {{- if .Values.persistence.downloads.enabled }}
-          persistentVolumeClaim:
-            claimName: {{ .Values.persistence.downloads.existingClaim | default (printf "%s-%s" (include "transmission.fullname" .) "downloads") }}
-        {{- else }}
-          emptyDir: {}
-        {{- end }}
-        - name: watch
-        {{- if .Values.persistence.watch.enabled }}
-          persistentVolumeClaim:
-            claimName: {{ .Values.persistence.watch.existingClaim | default (printf "%s-%s" (include "transmission.fullname" .) "watch") }}
+            claimName: {{ .Values.persistence.existingClaim | default (printf "%s-%s" (include "transmission.fullname" .) "data") }}
         {{- else }}
           emptyDir: {}
         {{- end }}
