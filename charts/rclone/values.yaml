@@ -13,10 +13,9 @@ configSecretName: rclone-config
 extraArgs:
   - --rc-no-auth
 
-dataMount:
-  emptyDir: {}
-  # persistentVolumeClaim:
-  #   claimName: myclaim
+extraPVCMounts:
+  []
+  #- name: data
 
 service:
   type: ClusterIP
