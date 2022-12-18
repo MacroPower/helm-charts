@@ -1,0 +1,12 @@
+apiVersion: v2
+name: transmission
+appVersion: '3.00-r6-ls146'
+version: '0.1.0'
+description: A Helm chart for Kubernetes
+home: https://jacobcolvin.com/
+sources:
+  - https://github.com/transmission/transmission
+maintainers:
+  - name: MacroPower
+    email: jacobcolvin1@gmail.com
+type: application

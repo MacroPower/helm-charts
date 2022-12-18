@@ -1,0 +1,24 @@
+{{- if and .Values.persistence.watch.enabled (not .Values.persistence.watch.existingClaim) -}}
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: {{ include "transmission.fullname" . }}-watch
+  labels:
+    {{- include "transmission.labels" . | nindent 4 }}
+{{- if .Values.persistence.watch.labels }}
+    {{ toYaml .Values.persistence.watch.labels | nindent 4 }}
+{{- end }}
+spec:
+  accessModes:
+    - {{ .Values.persistence.watch.accessMode | quote }}
+  resources:
+    requests:
+      storage: {{ .Values.persistence.watch.size | quote }}
+{{- if .Values.persistence.watch.storageClass }}
+{{- if (eq "-" .Values.persistence.watch.storageClass) }}
+  storageClassName: ""
+{{- else }}
+  storageClassName: "{{ .Values.persistence.watch.storageClass }}"
+{{- end }}
+{{- end }}
+{{- end }}
