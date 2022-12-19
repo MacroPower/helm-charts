@@ -59,10 +59,10 @@ spec:
               containerPort: 9091
               protocol: TCP
             - name: peer-tcp
-              containerPort: 51413
+              containerPort: {{ .Values.service.peer.ports.tcp }}
               protocol: TCP
             - name: peer-udp
-              containerPort: 51413
+              containerPort: {{ .Values.service.peer.ports.udp }}
               protocol: UDP
           livenessProbe:
             tcpSocket:
