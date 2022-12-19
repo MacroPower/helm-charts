@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "transmission.fullname" . }}-init
+  labels:
+    app.kubernetes.io/name: {{ include "transmission.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/component: scripts
+data:
+  init.sh: |
+    cp /tmp/settings.json /config/settings.json
+    chmod 600 /config/settings.json
+    chown {{ .Values.process.uid }}:{{ .Values.process.gid }} /config/settings.json

@@ -9,6 +9,8 @@ imagePullSecrets: []
 nameOverride: ''
 fullnameOverride: ''
 
+configSecretName: transmission-config
+
 serviceAccount:
   # Specifies whether a service account should be created
   create: true
@@ -52,6 +54,17 @@ service:
     ports:
       tcp: 51413
       udp: 51413
+
+init:
+  image:
+    repository: busybox
+    tag: '1.35.0'
+    pullPolicy: IfNotPresent
+
+  imagePullSecrets: []
+  securityContext: {}
+  extraEnv: []
+  resources: {}
 
 ingress:
   enabled: false

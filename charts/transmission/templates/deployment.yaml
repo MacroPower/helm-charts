@@ -25,6 +25,24 @@ spec:
       serviceAccountName: {{ include "transmission.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      initContainers:
+        - name: init-config
+          securityContext:
+            {{- toYaml .Values.init.securityContext | nindent 12 }}
+          image: "{{ .Values.init.image.repository }}:{{ .Values.init.image.tag }}"
+          imagePullPolicy: {{ .Values.init.image.pullPolicy }}
+          command: ["sh", "/scripts/init.sh"]
+          resources:
+            {{- .Values.init.resources | toYaml | nindent 12 }}
+          volumeMounts:
+            - name: init
+              mountPath: /scripts
+            - name: config-file
+              mountPath: /tmp/settings.json
+              subPath: settings.json
+            - mountPath: /config
+              name: data
+              subPath: config
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
@@ -69,6 +87,14 @@ spec:
               name: data
               subPath: downloads
       volumes:
+        - name: config-file
+          secret:
+            secretName: {{ .Values.configSecretName }}
+            optional: false
+        - name: init
+          configMap:
+            name: {{ include "transmission.fullname" . }}-init
+            optional: false
         - name: data
         {{- if .Values.persistence.enabled }}
           persistentVolumeClaim:
