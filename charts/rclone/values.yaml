@@ -10,8 +10,7 @@ imagePullSecrets: []
 
 configSecretName: rclone-config
 
-extraArgs:
-  - --rc-no-auth
+args: null
 
 extraPVCMounts:
   []
@@ -20,6 +19,8 @@ extraPVCMounts:
 service:
   type: ClusterIP
   port: 5572
+
+extraPorts: []
 
 init:
   image:

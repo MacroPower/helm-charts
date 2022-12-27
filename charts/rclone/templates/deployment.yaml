@@ -51,12 +51,16 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           command: ["rclone"]
           args:
+          {{- if .Values.args}}
+          {{- with .Values.args }}
+            {{- . | toYaml | nindent 12 }}
+          {{- end }}
+          {{- else }}
             - rcd
             - --rc-web-gui
             - --rc-web-gui-no-open-browser
+            - --rc-no-auth
             - --rc-addr=:{{ .Values.service.port }}
-          {{- with .Values.extraArgs }}
-            {{- . | toYaml | nindent 12 }}
           {{- end }}
           env:
             {{- range .Values.extraEnv }}
@@ -72,6 +76,11 @@ spec:
             - name: http
               containerPort: {{ .Values.service.port }}
               protocol: TCP
+          {{- range .Values.extraPorts }}
+            - name: {{ .name }}
+              containerPort: {{ .containerPort }}
+              protocol: {{ .protocol }}
+          {{- end }}
           livenessProbe:
             httpGet:
               path: /
