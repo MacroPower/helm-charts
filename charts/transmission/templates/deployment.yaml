@@ -92,7 +92,15 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.flood.image.repository }}:{{ .Values.flood.image.tag }}"
           imagePullPolicy: {{ .Values.flood.image.pullPolicy }}
-          command: ["/sbin/tini", "--", "flood", "--port", "3001", "--allowedpath", "/downloads"]
+          command: [
+            "/sbin/tini", "--", "flood",
+            "--port", "3001",
+            "--allowedpath", "/downloads",
+            "--auth", "none",
+            "--trurl", "http://localhost:9091/transmission/rpc",
+            "--truser", "transmission",
+            "--trpass", "${TRANSMISSION_RPC_PASS}"
+          ]
           env:
             - name: PUID
               value: "{{ .Values.process.uid }}"
@@ -100,6 +108,13 @@ spec:
               value: "{{ .Values.process.gid }}"
             - name: HOME
               value: /config
+            - name: TRANSMISSION_RPC_PASS
+              {{- if .Values.flood.rpcPass.valueFrom }}
+              valueFrom:
+                {{- toYaml .Values.flood.rpcPass.valueFrom | nindent 16 }}
+              {{- else if .Values.flood.rpcPass.value }}
+              value: "{{ .value }}"
+              {{- end }}
           ports:
             - name: flood
               containerPort: 3001

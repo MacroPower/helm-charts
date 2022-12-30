@@ -69,6 +69,13 @@ init:
 flood:
   enabled: false
 
+  rpcPass:
+    value: ''
+    valueFrom: null
+    # secretKeyRef:
+    #   name: transmission-credentials
+    #   key: rpcPass
+
   image:
     repository: jesec/flood
     tag: '4.7.0'
