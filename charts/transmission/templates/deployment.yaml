@@ -86,6 +86,47 @@ spec:
             - mountPath: /downloads
               name: data
               subPath: downloads
+      {{- if .Values.flood.enabled }}
+        - name: flood
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.flood.image.repository }}:{{ .Values.flood.image.tag }}"
+          imagePullPolicy: {{ .Values.flood.image.pullPolicy }}
+          command: ["--port", "3001", "--allowedpath", "/downloads"]
+          env:
+            - name: PUID
+              value: "{{ .Values.process.uid }}"
+            - name: PGID
+              value: "{{ .Values.process.gid }}"
+            - name: HOME
+              value: /config
+          ports:
+            - name: flood
+              containerPort: 3001
+              protocol: TCP
+          livenessProbe:
+            tcpSocket:
+              port: 3001
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          readinessProbe:
+            tcpSocket:
+              port: 3001
+            initialDelaySeconds: 5
+            periodSeconds: 2
+          resources:
+            {{- toYaml .Values.flood.resources | nindent 12 }}
+          volumeMounts:
+            - mountPath: /config
+              name: data
+              subPath: config
+            - mountPath: /watch
+              name: data
+              subPath: watch
+            - mountPath: /downloads
+              name: data
+              subPath: downloads
+      {{- end }}
       volumes:
         - name: config-file
           secret:

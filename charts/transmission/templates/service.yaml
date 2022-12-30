@@ -71,3 +71,26 @@ spec:
       protocol: UDP
   selector:
     {{- include "transmission.selectorLabels" . | nindent 4 }}
+
+{{- if .Values.flood.enabled }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "transmission.fullname" . }}-flood
+  labels:
+    {{- include "transmission.labels" . | nindent 4 }}
+{{- if .Values.flood.service.annotations }}
+  annotations:
+    {{ toYaml .Values.flood.service.annotations | nindent 4 }}
+{{- end }}
+spec:
+  type: {{ .Values.flood.service.type }}
+  ports:
+    - name: flood
+      targetPort: flood
+      port: {{ .Values.flood.service.port }}
+      protocol: TCP
+  selector:
+    {{- include "transmission.selectorLabels" . | nindent 4 }}
+{{- end }}

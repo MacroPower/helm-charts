@@ -66,6 +66,21 @@ init:
   extraEnv: []
   resources: {}
 
+flood:
+  enabled: false
+
+  image:
+    repository: jesec/flood
+    tag: '4.7.0'
+    pullPolicy: IfNotPresent
+
+  service:
+    annotations: {}
+    type: ClusterIP
+    port: 3001
+
+  resources: {}
+
 ingress:
   enabled: false
   annotations:
