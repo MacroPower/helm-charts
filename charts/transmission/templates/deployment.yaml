@@ -92,7 +92,7 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.flood.image.repository }}:{{ .Values.flood.image.tag }}"
           imagePullPolicy: {{ .Values.flood.image.pullPolicy }}
-          command: ["/sbin/tini", "--", "flood", --port", "3001", "--allowedpath", "/downloads"]
+          command: ["/sbin/tini", "--", "flood", "--port", "3001", "--allowedpath", "/downloads"]
           env:
             - name: PUID
               value: "{{ .Values.process.uid }}"
