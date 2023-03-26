@@ -208,6 +208,26 @@ entries:
     urls:
     - https://github.com/MacroPower/helm-charts/releases/download/servarr-0.1.0/servarr-0.1.0.tgz
     version: 0.1.0
+  template:
+  - apiVersion: v2
+    created: "2023-03-26T23:16:53.344693484Z"
+    dependencies:
+    - name: common
+      repository: https://jacobcolvin.com/helm-charts
+      version: 0.1.0
+    description: A common powered chart template.
+    digest: 3164f3f64a8876a1ea10f5e548ab6a213361df70cde49ce215ee125f7f6a3930
+    home: https://jacobcolvin.com/
+    kubeVersion: '>=1.22.0-0'
+    maintainers:
+    - email: jacobcolvin1@gmail.com
+      name: MacroPower
+    name: template
+    sources:
+    - https://github.com/MacroPower/helm-charts
+    urls:
+    - https://github.com/MacroPower/helm-charts/releases/download/template-0.1.0/template-0.1.0.tgz
+    version: 0.1.0
   transmission:
   - apiVersion: v2
     appVersion: 3.00-r6-ls146
@@ -370,4 +390,4 @@ entries:
     urls:
     - https://github.com/MacroPower/helm-charts/releases/download/twitch-predictions-recorder-0.1.0/twitch-predictions-recorder-0.1.0.tgz
     version: 0.1.0
-generated: "2023-03-26T23:11:00.962290144Z"
+generated: "2023-03-26T23:16:53.344733385Z"
