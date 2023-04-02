@@ -1,0 +1,39 @@
+image:
+  # https://github.com/cubed-it/inlets
+  repository: ghcr.io/cubed-it/inlets
+  pullPolicy: IfNotPresent
+  tag: "4.0.0"
+
+command: inlets
+
+inlets:
+  url: ~
+  strictForwarding: false
+  tokenSecretName: ~
+  tokenSecretKey: token
+
+  upstreams: []
+  # - match: ""
+  #   target: http://linkerd-gateway.linkerd-multicluster.svc.cluster.local:4191
+  # - match: tcp:6443
+  #   target: kubernetes.default.svc.cluster.local:443
+  # - match: tcp:6143
+  #   target: linkerd-gateway.linkerd-multicluster.svc.cluster.local:4143
+
+serviceAccount:
+  create: true
+  # -- The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+service:
+  main:
+    enabled: false
+
+probes:
+  liveness:
+    enabled: false
+  readiness:
+    enabled: false
+  startup:
+    enabled: false

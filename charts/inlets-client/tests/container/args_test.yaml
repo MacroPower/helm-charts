@@ -1,0 +1,115 @@
+suite: container args override
+templates:
+  - common.yaml
+tests:
+  - it: default should pass
+    asserts:
+      - documentIndex: 1
+        isKind:
+          of: Deployment
+      - documentIndex: 1
+        equal:
+          path: spec.template.spec.containers[0].args
+          value:
+            - client
+
+  - it: single string should pass
+    set:
+      args: sleep infinity
+    asserts:
+      - documentIndex: 1
+        isKind:
+          of: Deployment
+      - documentIndex: 1
+        equal:
+          path: spec.template.spec.containers[0].args
+          value:
+            - sleep infinity
+
+  - it: list of strings should pass
+    set:
+      args:
+        - sleep
+        - infinity
+    asserts:
+      - documentIndex: 1
+        isKind:
+          of: Deployment
+      - documentIndex: 1
+        equal:
+          path: spec.template.spec.containers[0].args
+          value:
+            - sleep
+            - infinity
+
+  - it: upstreams should pass
+    set:
+      inlets:
+        upstreams:
+          - match: ":1234"
+            target: http://example.com
+    asserts:
+      - documentIndex: 1
+        isKind:
+          of: Deployment
+      - documentIndex: 1
+        equal:
+          path: spec.template.spec.containers[0].args
+          value:
+            - client
+            - --upstream=:1234=http://example.com
+
+  - it: list of upstreams should pass
+    set:
+      inlets:
+        upstreams:
+          - match: "tcp:1000"
+            target: http://example.com
+          - match: "tcp:2000"
+            target: http://example.com/2
+    asserts:
+      - documentIndex: 1
+        isKind:
+          of: Deployment
+      - documentIndex: 1
+        equal:
+          path: spec.template.spec.containers[0].args
+          value:
+            - client
+            - --upstream=tcp:1000=http://example.com,tcp:2000=http://example.com/2
+
+  - it: http upstreams should pass
+    set:
+      inlets:
+        upstreams:
+          - target: http://example.com
+    asserts:
+      - documentIndex: 1
+        isKind:
+          of: Deployment
+      - documentIndex: 1
+        equal:
+          path: spec.template.spec.containers[0].args
+          value:
+            - client
+            - --upstream=http://example.com
+
+  - it: mixed list of upstreams should pass
+    set:
+      inlets:
+        upstreams:
+          - target: http://example.com
+          - match: "tcp:1000"
+            target: http://example.com/1
+          - match: "tcp:2000"
+            target: http://example.com/2
+    asserts:
+      - documentIndex: 1
+        isKind:
+          of: Deployment
+      - documentIndex: 1
+        equal:
+          path: spec.template.spec.containers[0].args
+          value:
+            - client
+            - --upstream=http://example.com,tcp:1000=http://example.com/1,tcp:2000=http://example.com/2

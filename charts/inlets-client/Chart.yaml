@@ -1,0 +1,16 @@
+apiVersion: v2
+name: inlets-client
+version: '0.1.0'
+appVersion: '4.0.0'
+kubeVersion: '>=1.22.0-0'
+description: Expose your local endpoints to the Internet or within a remote network, without touching firewalls.
+home: https://jacobcolvin.com/
+sources:
+  - https://github.com/cubed-it/inlets
+maintainers:
+  - name: MacroPower
+    email: jacobcolvin1@gmail.com
+dependencies:
+  - name: common
+    repository: https://jacobcolvin.com/helm-charts
+    version: '0.1.0'

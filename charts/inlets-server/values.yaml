@@ -1,0 +1,36 @@
+image:
+  # https://github.com/cubed-it/inlets
+  repository: ghcr.io/cubed-it/inlets
+  pullPolicy: IfNotPresent
+  tag: "4.0.0"
+
+command: inlets
+
+inlets:
+  port: ~
+  controlPort: &ControlPort 8123
+  disableTransportWrapping: true
+  tokenSecretName: ~
+  tokenSecretKey: token
+
+serviceAccount:
+  create: true
+  # -- The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+service:
+  main:
+    type: ClusterIP
+    ports:
+      http:
+        port: *ControlPort
+        protocol: TCP
+
+probes:
+  liveness:
+    enabled: false
+  readiness:
+    enabled: false
+  startup:
+    enabled: false
