@@ -37,6 +37,50 @@ entries:
     urls:
     - https://github.com/MacroPower/helm-charts/releases/download/example-v2-0.1.0/example-v2-0.1.0.tgz
     version: 0.1.0
+  inlets-client:
+  - apiVersion: v2
+    appVersion: 4.0.0
+    created: "2023-04-03T03:52:06.724521687Z"
+    dependencies:
+    - name: common
+      repository: https://jacobcolvin.com/helm-charts
+      version: 0.1.0
+    description: Expose your local endpoints to the Internet or within a remote network,
+      without touching firewalls.
+    digest: 2456a9575c111d2150592161eb79ec543d1ed9c7a24763f3184bbcf51c1b4aff
+    home: https://jacobcolvin.com/
+    kubeVersion: '>=1.22.0-0'
+    maintainers:
+    - email: jacobcolvin1@gmail.com
+      name: MacroPower
+    name: inlets-client
+    sources:
+    - https://github.com/cubed-it/inlets
+    urls:
+    - https://github.com/MacroPower/helm-charts/releases/download/inlets-client-0.1.0/inlets-client-0.1.0.tgz
+    version: 0.1.0
+  inlets-server:
+  - apiVersion: v2
+    appVersion: 4.0.0
+    created: "2023-04-03T03:52:06.937225685Z"
+    dependencies:
+    - name: common
+      repository: https://jacobcolvin.com/helm-charts
+      version: 0.1.0
+    description: Expose your local endpoints to the Internet or within a remote network,
+      without touching firewalls.
+    digest: 4be9b9702784d2c96eb43b7afc4b6ab839e52da2f1cffad9c347116f32108fa2
+    home: https://jacobcolvin.com/
+    kubeVersion: '>=1.22.0-0'
+    maintainers:
+    - email: jacobcolvin1@gmail.com
+      name: MacroPower
+    name: inlets-server
+    sources:
+    - https://github.com/cubed-it/inlets
+    urls:
+    - https://github.com/MacroPower/helm-charts/releases/download/inlets-server-0.1.0/inlets-server-0.1.0.tgz
+    version: 0.1.0
   local-volume-static-provisioner:
   - apiVersion: v2
     appVersion: 2.5.0
@@ -428,4 +472,4 @@ entries:
     urls:
     - https://github.com/MacroPower/helm-charts/releases/download/twitch-predictions-recorder-0.1.0/twitch-predictions-recorder-0.1.0.tgz
     version: 0.1.0
-generated: "2023-04-03T03:51:05.169225687Z"
+generated: "2023-04-03T03:52:06.937411286Z"
