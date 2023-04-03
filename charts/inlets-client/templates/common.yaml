@@ -33,11 +33,11 @@ args:
   {{ end }}
 {{ end }}
 
-{{ if .Values.tokenSecretName }}
+{{ if .Values.inlets.tokenSecretName }}
 persistence:
   config:
     enabled: true
-    name: {{ .Values.tokenSecretName }}
+    name: {{ .Values.inlets.tokenSecretName }}
     type: secret
     mountPath: /etc/inlets
     readOnly: true
