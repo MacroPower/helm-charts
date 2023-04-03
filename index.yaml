@@ -40,6 +40,27 @@ entries:
   inlets-client:
   - apiVersion: v2
     appVersion: 4.0.0
+    created: "2023-04-03T23:47:06.928248446Z"
+    dependencies:
+    - name: common
+      repository: https://jacobcolvin.com/helm-charts
+      version: 0.1.0
+    description: Expose your local endpoints to the Internet or within a remote network,
+      without touching firewalls.
+    digest: 06a6481fa1014123186b59768a1c315c76c63afae3de4025ba5b90fe498ee52d
+    home: https://jacobcolvin.com/
+    kubeVersion: '>=1.22.0-0'
+    maintainers:
+    - email: jacobcolvin1@gmail.com
+      name: MacroPower
+    name: inlets-client
+    sources:
+    - https://github.com/cubed-it/inlets
+    urls:
+    - https://github.com/MacroPower/helm-charts/releases/download/inlets-client-0.1.1/inlets-client-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
+    appVersion: 4.0.0
     created: "2023-04-03T03:52:06.724521687Z"
     dependencies:
     - name: common
@@ -60,6 +81,27 @@ entries:
     - https://github.com/MacroPower/helm-charts/releases/download/inlets-client-0.1.0/inlets-client-0.1.0.tgz
     version: 0.1.0
   inlets-server:
+  - apiVersion: v2
+    appVersion: 4.0.0
+    created: "2023-04-03T23:47:07.088619599Z"
+    dependencies:
+    - name: common
+      repository: https://jacobcolvin.com/helm-charts
+      version: 0.1.0
+    description: Expose your local endpoints to the Internet or within a remote network,
+      without touching firewalls.
+    digest: 0ab1b8a1292e978671a861ec634cc6518436f93b9fd17b6dd188e768ceef315f
+    home: https://jacobcolvin.com/
+    kubeVersion: '>=1.22.0-0'
+    maintainers:
+    - email: jacobcolvin1@gmail.com
+      name: MacroPower
+    name: inlets-server
+    sources:
+    - https://github.com/cubed-it/inlets
+    urls:
+    - https://github.com/MacroPower/helm-charts/releases/download/inlets-server-0.1.1/inlets-server-0.1.1.tgz
+    version: 0.1.1
   - apiVersion: v2
     appVersion: 4.0.0
     created: "2023-04-03T03:52:06.937225685Z"
@@ -472,4 +514,4 @@ entries:
     urls:
     - https://github.com/MacroPower/helm-charts/releases/download/twitch-predictions-recorder-0.1.0/twitch-predictions-recorder-0.1.0.tgz
     version: 0.1.0
-generated: "2023-04-03T03:52:06.937411286Z"
+generated: "2023-04-03T23:47:07.088692299Z"
