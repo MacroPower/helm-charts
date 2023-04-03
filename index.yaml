@@ -210,6 +210,25 @@ entries:
     version: 0.1.0
   template:
   - apiVersion: v2
+    created: "2023-04-03T03:51:05.169190887Z"
+    dependencies:
+    - name: common
+      repository: https://jacobcolvin.com/helm-charts
+      version: 0.1.0
+    description: A common powered chart template.
+    digest: dcc65db6ba17ca05352fb542ba4001e06baacaf35867eefc5bc967b65c90d0bc
+    home: https://jacobcolvin.com/
+    kubeVersion: '>=1.22.0-0'
+    maintainers:
+    - email: jacobcolvin1@gmail.com
+      name: MacroPower
+    name: template
+    sources:
+    - https://github.com/MacroPower/helm-charts
+    urls:
+    - https://github.com/MacroPower/helm-charts/releases/download/template-0.1.2/template-0.1.2.tgz
+    version: 0.1.2
+  - apiVersion: v2
     created: "2023-04-01T23:47:05.958337304Z"
     dependencies:
     - name: common
@@ -409,4 +428,4 @@ entries:
     urls:
     - https://github.com/MacroPower/helm-charts/releases/download/twitch-predictions-recorder-0.1.0/twitch-predictions-recorder-0.1.0.tgz
     version: 0.1.0
-generated: "2023-04-01T23:47:05.958409005Z"
+generated: "2023-04-03T03:51:05.169225687Z"
