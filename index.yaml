@@ -40,6 +40,27 @@ entries:
   inlets-client:
   - apiVersion: v2
     appVersion: 4.0.0
+    created: "2023-04-04T00:07:32.374830892Z"
+    dependencies:
+    - name: common
+      repository: https://jacobcolvin.com/helm-charts
+      version: 0.1.0
+    description: Expose your local endpoints to the Internet or within a remote network,
+      without touching firewalls.
+    digest: 85f56464ea792ad4364fb9c9a6d661e865e083f8c619a710f5febff553f3c515
+    home: https://jacobcolvin.com/
+    kubeVersion: '>=1.22.0-0'
+    maintainers:
+    - email: jacobcolvin1@gmail.com
+      name: MacroPower
+    name: inlets-client
+    sources:
+    - https://github.com/cubed-it/inlets
+    urls:
+    - https://github.com/MacroPower/helm-charts/releases/download/inlets-client-0.1.2/inlets-client-0.1.2.tgz
+    version: 0.1.2
+  - apiVersion: v2
+    appVersion: 4.0.0
     created: "2023-04-03T23:47:06.928248446Z"
     dependencies:
     - name: common
@@ -514,4 +535,4 @@ entries:
     urls:
     - https://github.com/MacroPower/helm-charts/releases/download/twitch-predictions-recorder-0.1.0/twitch-predictions-recorder-0.1.0.tgz
     version: 0.1.0
-generated: "2023-04-03T23:47:07.088692299Z"
+generated: "2023-04-04T00:07:32.374903893Z"
