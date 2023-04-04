@@ -14,7 +14,7 @@ args:
   {{ if .Values.inlets.url }}
   - "--url={{ .Values.inlets.url }}"
   {{ end }}
-  {{ if eq .Values.inlets.disableTransportWrapping false }}
+  {{ if eq .Values.inlets.strictForwarding false }}
   - "--strict-forwarding=false"
   {{ end }}
   {{ if .Values.inlets.tokenSecretName }}

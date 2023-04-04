@@ -113,3 +113,18 @@ tests:
           value:
             - client
             - --upstream=http://example.com,tcp:1000=http://example.com/1,tcp:2000=http://example.com/2
+
+  - it: strictForwarding should be added when false
+    set:
+      inlets:
+        strictForwarding: false
+    asserts:
+      - documentIndex: 1
+        isKind:
+          of: Deployment
+      - documentIndex: 1
+        equal:
+          path: spec.template.spec.containers[0].args
+          value:
+            - client
+            - --strict-forwarding=false
