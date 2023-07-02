@@ -1,12 +1,16 @@
 apiVersion: v2
 name: rclone
-appVersion: '1.60.1'
-version: '0.3.0'
-description: A Helm chart for Kubernetes
+appVersion: '1.63.0'
+version: '1.0.0'
+kubeVersion: '>=1.22.0-0'
+description: A common powered chart template.
 home: https://jacobcolvin.com/
 sources:
   - https://github.com/rclone/rclone
 maintainers:
   - name: MacroPower
     email: jacobcolvin1@gmail.com
-type: application
+dependencies:
+  - name: common
+    repository: https://jacobcolvin.com/helm-charts
+    version: '0.1.0'

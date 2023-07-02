@@ -1,77 +1,69 @@
-nameOverride: ''
-fullnameOverride: ''
-
+---
 image:
+  # https://github.com/rclone/rclone
   repository: rclone/rclone
-  tag: '1.60.1'
+  tag: "1.63.0"
   pullPolicy: IfNotPresent
 
-imagePullSecrets: []
+init: |
+  rclone rcd \
+    --rc-web-gui \
+    --rc-web-gui-no-open-browser \
+    --rc-no-auth \
+    --rc-addr=:5572 &
 
-configSecretName: rclone-config
+  wait -n
+  exit $?
 
-args: null
-
-extraPVCMounts:
-  []
-  #- name: data
-
-service:
-  type: ClusterIP
-  port: 5572
-
-extraPorts: []
-
-init:
-  image:
-    repository: busybox
-    tag: '1.35.0'
-    pullPolicy: IfNotPresent
-
-  imagePullSecrets: []
-  securityContext: {}
-  extraEnv: []
-  resources: {}
-
-extraEnv: []
-
-extraInitContainers: []
+persistence:
+  config:
+    enabled: true
+    name: rclone-config
+    type: secret
+    subPath:
+      - path: rclone.conf
+        mountPath: /config/rclone/rclone.conf
+        readOnly: true
 
 serviceAccount:
-  # Specifies whether a service account should be created
   create: true
-  # The name of the service account to use.
+  # -- The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
-  name:
+  name: ""
 
-podSecurityContext:
-  {}
-  # fsGroup: 2000
+service:
+  main:
+    enabled: true
+    type: ClusterIP
+    ports:
+      http:
+        enabled: true
+        primary: true
+        port: 5572
+        protocol: TCP
 
-securityContext:
-  {}
-  # capabilities:
-  #   drop:
-  #   - ALL
-  # readOnlyRootFilesystem: true
-  # runAsNonRoot: true
-  # runAsUser: 1000
-
-resources:
-  {}
-  # We usually recommend not to specify default resources and to leave this as a conscious
-  # choice for the user. This also increases chances charts run on environments with little
-  # resources, such as Minikube. If you do want to specify resources, uncomment the following
-  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-  # limits:
-  #   cpu: 100m
-  #   memory: 128Mi
-  # requests:
-  #   cpu: 100m
-  #   memory: 128Mi
-
-nodeSelector: {}
-
-tolerations: []
-
-affinity: {}
+probes:
+  liveness:
+    enabled: true
+    custom: true
+    type: TCP
+    spec:
+      httpGet:
+        path: /
+        port: http
+      initialDelaySeconds: 15
+      timeoutSeconds: 5
+      periodSeconds: 5
+  readiness:
+    enabled: true
+    custom: true
+    type: TCP
+    spec:
+      httpGet:
+        path: /
+        port: http
+      initialDelaySeconds: 15
+      timeoutSeconds: 5
+      periodSeconds: 5
+  startup:
+    enabled: false

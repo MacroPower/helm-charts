@@ -1,0 +1,48 @@
+---
+controller:
+  enabled: true
+  type: cronjob
+  cronjob:
+    # -- Specifies how to treat concurrent executions of a job that is created by this cron job, valid values are Allow, Forbid or Replace
+    concurrencyPolicy: Forbid
+    # -- Sets the CronJob time when to execute your jobs
+    schedule: "*/20 * * * *"
+    # -- The deadline in seconds for starting the job if it misses its scheduled time for any reason
+    startingDeadlineSeconds: 30
+    # -- The number of succesful Jobs to keep
+    successfulJobsHistory: 1
+    # -- The number of failed Jobs to keep
+    failedJobsHistory: 1
+    # --  If this field is set, ttlSecondsAfterFinished after the Job finishes, it is eligible to be automatically deleted.
+    ttlSecondsAfterFinished:
+
+init: |-
+  rclone --help
+
+persistence:
+  config:
+    enabled: true
+    name: rclone-config
+    type: secret
+    subPath:
+      - path: rclone.conf
+        mountPath: /config/rclone/rclone.conf
+        readOnly: true
+
+serviceAccount:
+  create: true
+  # -- The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+service:
+  main:
+    enabled: false
+
+probes:
+  liveness:
+    enabled: false
+  readiness:
+    enabled: false
+  startup:
+    enabled: false
