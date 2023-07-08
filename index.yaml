@@ -20,23 +20,6 @@ entries:
     urls:
     - https://github.com/MacroPower/helm-charts/releases/download/common-0.1.0/common-0.1.0.tgz
     version: 0.1.0
-  example-v2:
-  - apiVersion: v2
-    appVersion: "1.0"
-    created: "2022-10-28T23:00:59.866827332Z"
-    description: A Helm chart for Kubernetes
-    digest: 56daf7b6e3ef90d48ba24867f59c3a98a39e3bff7f7032f83bfc715a66c2fe1e
-    home: https://jacobcolvin.com/
-    maintainers:
-    - email: jacobcolvin1@gmail.com
-      name: Jacob Colvin
-    name: example-v2
-    sources:
-    - https://github.com/MacroPower/go_template
-    type: application
-    urls:
-    - https://github.com/MacroPower/helm-charts/releases/download/example-v2-0.1.0/example-v2-0.1.0.tgz
-    version: 0.1.0
   inlets-client:
   - apiVersion: v2
     appVersion: 4.0.0
@@ -585,4 +568,4 @@ entries:
     urls:
     - https://github.com/MacroPower/helm-charts/releases/download/twitch-predictions-recorder-0.1.0/twitch-predictions-recorder-0.1.0.tgz
     version: 0.1.0
-generated: "2023-07-08T21:57:08.944671573Z"
+generated: "2023-07-08T22:02:08.163198935Z"
