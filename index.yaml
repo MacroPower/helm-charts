@@ -164,6 +164,36 @@ entries:
     - https://github.com/MacroPower/helm-charts/releases/download/local-volume-static-provisioner-1.0.0/local-volume-static-provisioner-1.0.0.tgz
     version: 1.0.0
   rclone:
+  - annotations:
+      artifacthub.io/links: |
+        - name: source
+          url: https://github.com/rclone/rclone
+        - name: chart
+          url: https://github.com/MacroPower/helm-charts/tree/main/charts/rclone
+    apiVersion: v2
+    appVersion: 1.63.0
+    created: "2023-07-08T21:57:08.944279076Z"
+    dependencies:
+    - name: common
+      repository: https://jacobcolvin.com/helm-charts
+      version: 0.1.0
+    description: An rclone chart with support for both Remote Control and CronJob.
+    digest: 728e16675a5758114e0a2824387836ae82992d5fe76712defc8e0a8a061e8750
+    home: https://rclone.org
+    icon: https://raw.githubusercontent.com/rclone/rclone/master/graphics/logo/svg/logo_symbol_color.svg
+    keywords:
+    - kubernetes
+    - helm
+    - rclone
+    - rsync
+    kubeVersion: '>=1.22.0-0'
+    maintainers:
+    - email: jacobcolvin1@gmail.com
+      name: MacroPower
+    name: rclone
+    urls:
+    - https://github.com/MacroPower/helm-charts/releases/download/rclone-1.0.1/rclone-1.0.1.tgz
+    version: 1.0.1
   - apiVersion: v2
     appVersion: 1.63.0
     created: "2023-07-02T19:05:26.563054691Z"
@@ -555,4 +585,4 @@ entries:
     urls:
     - https://github.com/MacroPower/helm-charts/releases/download/twitch-predictions-recorder-0.1.0/twitch-predictions-recorder-0.1.0.tgz
     version: 0.1.0
-generated: "2023-07-02T19:05:26.563108692Z"
+generated: "2023-07-08T21:57:08.944671573Z"
