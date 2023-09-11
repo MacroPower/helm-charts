@@ -1,0 +1,26 @@
+apiVersion: v2
+name: osrs-ge-exporter
+appVersion: '0.1.3'
+version: '0.1.0'
+kubeVersion: '>=1.22.0-0'
+description: A helm chart for the OSRS GE Exporter.
+home: https://jacobcolvin.com
+icon: https://oldschool.runescape.wiki/images/thumb/Grand_Exchange_logo.png/150px-Grand_Exchange_logo.png
+keywords:
+  - kubernetes
+  - helm
+  - osrs
+  - ge
+maintainers:
+  - name: MacroPower
+    email: jacobcolvin1@gmail.com
+dependencies:
+  - name: common
+    repository: https://jacobcolvin.com/helm-charts
+    version: '0.1.0'
+annotations:
+  artifacthub.io/links: |
+    - name: source
+      url: https://github.com/MacroPower/osrs_ge_exporter
+    - name: chart
+      url: https://github.com/MacroPower/helm-charts/tree/main/charts/osrs-ge-exporter
