@@ -146,6 +146,37 @@ entries:
     urls:
     - https://github.com/MacroPower/helm-charts/releases/download/local-volume-static-provisioner-1.0.0/local-volume-static-provisioner-1.0.0.tgz
     version: 1.0.0
+  osrs-ge-exporter:
+  - annotations:
+      artifacthub.io/links: |
+        - name: source
+          url: https://github.com/MacroPower/osrs_ge_exporter
+        - name: chart
+          url: https://github.com/MacroPower/helm-charts/tree/main/charts/osrs-ge-exporter
+    apiVersion: v2
+    appVersion: 0.1.3
+    created: "2023-09-11T01:13:59.822836981Z"
+    dependencies:
+    - name: common
+      repository: https://jacobcolvin.com/helm-charts
+      version: 0.1.0
+    description: A helm chart for the OSRS GE Exporter.
+    digest: 1e9ae2588ae1bf3d672e44bbbedda5e278846b76c4cecc268cd4715ef2ca970b
+    home: https://jacobcolvin.com
+    icon: https://oldschool.runescape.wiki/images/thumb/Grand_Exchange_logo.png/150px-Grand_Exchange_logo.png
+    keywords:
+    - kubernetes
+    - helm
+    - osrs
+    - ge
+    kubeVersion: '>=1.22.0-0'
+    maintainers:
+    - email: jacobcolvin1@gmail.com
+      name: MacroPower
+    name: osrs-ge-exporter
+    urls:
+    - https://github.com/MacroPower/helm-charts/releases/download/osrs-ge-exporter-0.1.0/osrs-ge-exporter-0.1.0.tgz
+    version: 0.1.0
   rclone:
   - annotations:
       artifacthub.io/links: |
@@ -568,4 +599,4 @@ entries:
     urls:
     - https://github.com/MacroPower/helm-charts/releases/download/twitch-predictions-recorder-0.1.0/twitch-predictions-recorder-0.1.0.tgz
     version: 0.1.0
-generated: "2023-07-08T22:02:08.163198935Z"
+generated: "2023-09-11T01:13:59.823019085Z"
