@@ -1,0 +1,24 @@
+apiVersion: v2
+name: twitch-channel-points-miner
+appVersion: '1.8.6'
+version: '0.1.0'
+kubeVersion: '>=1.22.0-0'
+description: A helm chart for Twitch Channel Points Miner.
+home: https://github.com/rdavydov/Twitch-Channel-Points-Miner-v2
+keywords:
+  - kubernetes
+  - helm
+  - twitch
+maintainers:
+  - name: MacroPower
+    email: jacobcolvin1@gmail.com
+dependencies:
+  - name: common
+    repository: https://jacobcolvin.com/helm-charts
+    version: '0.1.0'
+annotations:
+  artifacthub.io/links: |
+    - name: source
+      url: https://github.com/rdavydov/Twitch-Channel-Points-Miner-v2
+    - name: chart
+      url: https://github.com/MacroPower/helm-charts/tree/main/charts/twitch-channel-points-miner
