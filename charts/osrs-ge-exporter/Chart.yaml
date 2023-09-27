@@ -1,7 +1,7 @@
 apiVersion: v2
 name: osrs-ge-exporter
 appVersion: '0.3'
-version: '0.2.0'
+version: '0.3.0'
 kubeVersion: '>=1.22.0-0'
 description: A helm chart for the OSRS GE Exporter.
 home: https://jacobcolvin.com
@@ -17,7 +17,7 @@ maintainers:
 dependencies:
   - name: common
     repository: https://jacobcolvin.com/helm-charts
-    version: '0.1.0'
+    version: '0.2.0'
 annotations:
   artifacthub.io/links: |
     - name: source
