@@ -371,6 +371,27 @@ serviceMonitor:
         interval: 1m
         scrapeTimeout: 10s
 
+prometheusRule:
+  main:
+    # -- Enables or disables the prometheusRule.
+    enabled: false
+
+    # -- Override the name suffix that is used for this prometheusRule.
+    nameOverride:
+
+    # -- Provide additional annotations which may be required.
+    annotations: {}
+
+    # -- Provide additional labels which may be required.
+    labels: {}
+
+    # -- Configures the prometheusRule groups.
+    groups: []
+    # - name: example.rules
+    #   rules:
+    #     - record: Example
+    #       expr: vector(1)
+
 # -- Configure the ingresses for the chart here.
 # Additional ingresses can be added by adding a dictionary key similar to the 'main' ingress.
 # @default -- See below
