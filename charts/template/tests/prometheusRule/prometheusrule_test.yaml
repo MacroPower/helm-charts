@@ -1,0 +1,82 @@
+suite: prometheusRule values
+templates:
+  - common.yaml
+tests:
+  - it: a prometheusRule is not created by default
+    asserts:
+      - hasDocuments:
+          count: 2
+      - documentIndex: &ServiceDocument 0
+        isKind:
+          of: Deployment
+      - documentIndex: &ServiceDocument 1
+        isKind:
+          of: Service
+
+  - it: a prometheusRule is not created when disabled
+    set:
+      prometheusRule:
+        main:
+          enabled: false
+    asserts:
+      - hasDocuments:
+          count: 2
+      - documentIndex: &ServiceDocument 0
+        isKind:
+          of: Deployment
+      - documentIndex: &ServiceDocument 1
+        isKind:
+          of: Service
+
+  - it: a prometheusRule is created
+    set:
+      prometheusRule:
+        main:
+          enabled: true
+          labels:
+            test.label: testvalue
+          groups:
+            - record: example:requests_total
+              expr: sum by (job) (example_requests_total)
+    asserts:
+      - hasDocuments:
+          count: 3
+      - documentIndex: &PrometheusRuleDocument 2
+        isKind:
+          of: PrometheusRule
+      - documentIndex: *PrometheusRuleDocument
+        equal:
+          path: metadata.name
+          value: RELEASE-NAME
+      - documentIndex: *PrometheusRuleDocument
+        equal:
+          path: spec.groups
+          value:
+            - record: example:requests_total
+              expr: sum by (job) (example_requests_total)
+      - documentIndex: *PrometheusRuleDocument
+        equal:
+          path: metadata.labels
+          value:
+            app.kubernetes.io/instance: RELEASE-NAME
+            app.kubernetes.io/managed-by: Helm
+            app.kubernetes.io/name: RELEASE-NAME
+            helm.sh/chart: template-0.1.2
+            test.label: testvalue
+
+  - it: a prometheusRule is created with nameOverride
+    set:
+      prometheusRule:
+        main:
+          enabled: true
+          nameOverride: test
+    asserts:
+      - hasDocuments:
+          count: 3
+      - documentIndex: &PrometheusRuleDocument 2
+        isKind:
+          of: PrometheusRule
+      - documentIndex: *PrometheusRuleDocument
+        equal:
+          path: metadata.name
+          value: RELEASE-NAME-test
