@@ -765,6 +765,35 @@ entries:
           url: https://github.com/MacroPower/helm-charts/tree/main/charts/wakatime-exporter
     apiVersion: v2
     appVersion: 0.1.0
+    created: "2023-09-28T23:46:47.224081088Z"
+    dependencies:
+    - name: common
+      repository: https://jacobcolvin.com/helm-charts
+      version: 0.2.0
+    description: A helm chart for the Wakatime Exporter.
+    digest: 97a38f935c42814d1af2f13bee12b1843f73325ed24ed2f64bdb653eac87a33c
+    home: https://jacobcolvin.com
+    icon: https://raw.githubusercontent.com/wakatime/jetbrains-wakatime/8491b6b0009a3904c869f372b4b7335b9fcb4670/META-INF/pluginIcon_dark.svg
+    keywords:
+    - kubernetes
+    - helm
+    - wakatime
+    kubeVersion: '>=1.22.0-0'
+    maintainers:
+    - email: jacobcolvin1@gmail.com
+      name: MacroPower
+    name: wakatime-exporter
+    urls:
+    - https://github.com/MacroPower/helm-charts/releases/download/wakatime-exporter-0.1.1/wakatime-exporter-0.1.1.tgz
+    version: 0.1.1
+  - annotations:
+      artifacthub.io/links: |
+        - name: source
+          url: https://github.com/MacroPower/wakatime_exporter
+        - name: chart
+          url: https://github.com/MacroPower/helm-charts/tree/main/charts/wakatime-exporter
+    apiVersion: v2
+    appVersion: 0.1.0
     created: "2023-09-28T23:35:31.252517336Z"
     dependencies:
     - name: common
@@ -786,4 +815,4 @@ entries:
     urls:
     - https://github.com/MacroPower/helm-charts/releases/download/wakatime-exporter-0.1.0/wakatime-exporter-0.1.0.tgz
     version: 0.1.0
-generated: "2023-09-28T23:35:31.252859438Z"
+generated: "2023-09-28T23:46:47.224132091Z"
