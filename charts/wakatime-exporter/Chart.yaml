@@ -1,0 +1,25 @@
+apiVersion: v2
+name: wakatime-exporter
+appVersion: '0.1.0'
+version: '0.1.0'
+kubeVersion: '>=1.22.0-0'
+description: A helm chart for the Wakatime Exporter.
+home: https://jacobcolvin.com
+icon: https://raw.githubusercontent.com/wakatime/jetbrains-wakatime/8491b6b0009a3904c869f372b4b7335b9fcb4670/META-INF/pluginIcon_dark.svg
+keywords:
+  - kubernetes
+  - helm
+  - wakatime
+maintainers:
+  - name: MacroPower
+    email: jacobcolvin1@gmail.com
+dependencies:
+  - name: common
+    repository: https://jacobcolvin.com/helm-charts
+    version: '0.2.0'
+annotations:
+  artifacthub.io/links: |
+    - name: source
+      url: https://github.com/MacroPower/wakatime_exporter
+    - name: chart
+      url: https://github.com/MacroPower/helm-charts/tree/main/charts/wakatime-exporter

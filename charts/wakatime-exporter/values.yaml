@@ -1,0 +1,34 @@
+---
+image:
+  # https://github.com/MacroPower/wakatime_exporter
+  repository: macropower/wakatime_exporter
+  tag: "0.1.0"
+  pullPolicy: IfNotPresent
+
+env:
+  WAKA_API_KEY:
+    valueFrom:
+      secretKeyRef:
+        name: wakatime-credentials
+        key: api-key
+
+service:
+  main:
+    enabled: true
+    type: ClusterIP
+    ports:
+      http:
+        enabled: true
+        primary: true
+        port: 9212
+        protocol: TCP
+
+serviceMonitor:
+  main:
+    enabled: false
+    endpoints:
+      - port: http
+        scheme: http
+        path: /metrics
+        interval: 1m
+        scrapeTimeout: 10s
