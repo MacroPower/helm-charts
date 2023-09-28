@@ -756,4 +756,34 @@ entries:
     urls:
     - https://github.com/MacroPower/helm-charts/releases/download/twitch-predictions-recorder-0.1.0/twitch-predictions-recorder-0.1.0.tgz
     version: 0.1.0
-generated: "2023-09-28T23:05:30.706447826Z"
+  wakatime-exporter:
+  - annotations:
+      artifacthub.io/links: |
+        - name: source
+          url: https://github.com/MacroPower/wakatime_exporter
+        - name: chart
+          url: https://github.com/MacroPower/helm-charts/tree/main/charts/wakatime-exporter
+    apiVersion: v2
+    appVersion: 0.1.0
+    created: "2023-09-28T23:35:31.252517336Z"
+    dependencies:
+    - name: common
+      repository: https://jacobcolvin.com/helm-charts
+      version: 0.2.0
+    description: A helm chart for the Wakatime Exporter.
+    digest: 3e5d4f94c7bed4fcbe2a4fbc1bb1e2dd4d08c06d4eaa5530aee80b74b06abfef
+    home: https://jacobcolvin.com
+    icon: https://raw.githubusercontent.com/wakatime/jetbrains-wakatime/8491b6b0009a3904c869f372b4b7335b9fcb4670/META-INF/pluginIcon_dark.svg
+    keywords:
+    - kubernetes
+    - helm
+    - wakatime
+    kubeVersion: '>=1.22.0-0'
+    maintainers:
+    - email: jacobcolvin1@gmail.com
+      name: MacroPower
+    name: wakatime-exporter
+    urls:
+    - https://github.com/MacroPower/helm-charts/releases/download/wakatime-exporter-0.1.0/wakatime-exporter-0.1.0.tgz
+    version: 0.1.0
+generated: "2023-09-28T23:35:31.252859438Z"
