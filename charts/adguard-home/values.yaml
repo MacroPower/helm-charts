@@ -215,12 +215,14 @@ service:
     ports:
       http:
         port: 3000
-      dns-tcp:
+  dns:
+    ports:
+      tcp:
         enabled: true
         port: 53
         protocol: TCP
         targetPort: 53
-      dns-udp:
+      udp:
         enabled: true
         port: 53
         protocol: UDP
