@@ -1,0 +1,24 @@
+apiVersion: v2
+name: adguard-home
+appVersion: '0.107.38'
+version: '0.1.0'
+kubeVersion: '>=1.22.0-0'
+description: A helm chart for Adguard Home.
+home: https://adguard.com
+keywords:
+  - kubernetes
+  - helm
+  - adguard
+maintainers:
+  - name: MacroPower
+    email: jacobcolvin1@gmail.com
+dependencies:
+  - name: common
+    repository: https://jacobcolvin.com/helm-charts
+    version: '0.2.0'
+annotations:
+  artifacthub.io/links: |
+    - name: source
+      url: https://github.com/AdguardTeam/AdGuardHome
+    - name: chart
+      url: https://github.com/MacroPower/helm-charts/tree/main/charts/adguard-home
