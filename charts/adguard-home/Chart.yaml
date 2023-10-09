@@ -1,7 +1,7 @@
 apiVersion: v2
 name: adguard-home
 appVersion: '0.107.38'
-version: '0.1.0'
+version: '0.2.0'
 kubeVersion: '>=1.22.0-0'
 description: A helm chart for Adguard Home.
 home: https://adguard.com

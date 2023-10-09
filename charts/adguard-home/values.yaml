@@ -1,6 +1,17 @@
 controller:
-  # -- Number of pods to load balance between
   replicas: 1
+
+image:
+  repository: adguard/adguardhome
+  tag: 'v0.107.38'
+  pullPolicy: IfNotPresent
+
+args:
+  - "--config"
+  - "/opt/adguardhome/conf/AdGuardHome.yaml"
+  - "--work-dir"
+  - "/opt/adguardhome/work"
+  - "--no-check-update"
 
 configMaps:
   config:
@@ -180,9 +191,6 @@ configMaps:
         schema_version: 27
 
 initContainers:
-  # -- Configures an initContainer that copies the configmap to the AdGuardHome conf directory
-  # It does NOT overwrite when the file already exists.
-  # @default -- See values.yaml
   copy-configmap:
     image: busybox
     imagePullPolicy: IfNotPresent
@@ -190,10 +198,8 @@ initContainers:
       - "sh"
       - "-c"
       - |
-        if [ ! -f /opt/adguardhome/conf/AdGuardHome.yaml ]; then
-          mkdir -p /opt/adguardhome/conf
-          cp /tmp/AdGuardHome.yaml /opt/adguardhome/conf/AdGuardHome.yaml
-        fi
+        mkdir -p /opt/adguardhome/conf
+        cp /tmp/AdGuardHome.yaml /opt/adguardhome/conf/AdGuardHome.yaml
     volumeMounts:
       - name: config
         mountPath: /tmp/AdGuardHome.yaml
@@ -203,20 +209,6 @@ initContainers:
     securityContext:
       runAsUser: 0
 
-image:
-  repository: adguard/adguardhome
-  tag: 'v0.107.38'
-  pullPolicy: IfNotPresent
-
-args:
-  - "--config"
-  - "/opt/adguardhome/conf/AdGuardHome.yaml"
-  - "--work-dir"
-  - "/opt/adguardhome/work"
-  - "--no-check-update"
-
-# -- Configures service settings for the chart.
-# @default -- See values.yaml
 service:
   main:
     primary: true
