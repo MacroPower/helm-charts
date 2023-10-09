@@ -9,6 +9,34 @@ entries:
           url: https://github.com/MacroPower/helm-charts/tree/main/charts/adguard-home
     apiVersion: v2
     appVersion: 0.107.38
+    created: "2023-10-09T01:53:48.179476157Z"
+    dependencies:
+    - name: common
+      repository: https://jacobcolvin.com/helm-charts
+      version: 0.2.0
+    description: A helm chart for Adguard Home.
+    digest: cb595ba111783ae8e2b51499372bedcc55331c4c41d19000abe3fc0a68256ca5
+    home: https://adguard.com
+    keywords:
+    - kubernetes
+    - helm
+    - adguard
+    kubeVersion: '>=1.22.0-0'
+    maintainers:
+    - email: jacobcolvin1@gmail.com
+      name: MacroPower
+    name: adguard-home
+    urls:
+    - https://github.com/MacroPower/helm-charts/releases/download/adguard-home-0.3.0/adguard-home-0.3.0.tgz
+    version: 0.3.0
+  - annotations:
+      artifacthub.io/links: |
+        - name: source
+          url: https://github.com/AdguardTeam/AdGuardHome
+        - name: chart
+          url: https://github.com/MacroPower/helm-charts/tree/main/charts/adguard-home
+    apiVersion: v2
+    appVersion: 0.107.38
     created: "2023-10-09T01:17:10.070921276Z"
     dependencies:
     - name: common
@@ -872,4 +900,4 @@ entries:
     urls:
     - https://github.com/MacroPower/helm-charts/releases/download/wakatime-exporter-0.1.0/wakatime-exporter-0.1.0.tgz
     version: 0.1.0
-generated: "2023-10-09T01:17:10.071164579Z"
+generated: "2023-10-09T01:53:48.179538857Z"
