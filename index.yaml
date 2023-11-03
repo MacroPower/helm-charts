@@ -573,6 +573,29 @@ entries:
     urls:
     - https://github.com/MacroPower/helm-charts/releases/download/servarr-0.1.0/servarr-0.1.0.tgz
     version: 0.1.0
+  tailscale-operator:
+  - apiVersion: v2
+    appVersion: unstable
+    created: "2023-11-03T16:47:01.494023361Z"
+    description: A Helm chart for Tailscale Kubernetes operator
+    digest: b5131fdc39dda183d2ad969268360471428d47bf72497812a39c760ec9e39a46
+    home: https://github.com/tailscale/tailscale
+    keywords:
+    - tailscale
+    - vpn
+    - ingress
+    - egress
+    - wireguard
+    maintainers:
+    - name: tailscale-maintainers
+      url: https://tailscale.com/
+    name: tailscale-operator
+    sources:
+    - https://github.com/tailscale/tailscale
+    type: application
+    urls:
+    - https://github.com/MacroPower/helm-charts/releases/download/tailscale-operator-0.1.0/tailscale-operator-0.1.0.tgz
+    version: 0.1.0
   template:
   - apiVersion: v2
     created: "2023-09-27T05:26:23.725894389Z"
@@ -900,4 +923,4 @@ entries:
     urls:
     - https://github.com/MacroPower/helm-charts/releases/download/wakatime-exporter-0.1.0/wakatime-exporter-0.1.0.tgz
     version: 0.1.0
-generated: "2023-10-09T01:53:48.179538857Z"
+generated: "2023-11-03T16:47:01.494146771Z"
