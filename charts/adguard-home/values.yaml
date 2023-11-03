@@ -216,6 +216,7 @@ service:
       http:
         port: 3000
   dns:
+    type: LoadBalancer
     ports:
       tcp:
         enabled: true
@@ -227,6 +228,16 @@ service:
         port: 53
         protocol: UDP
         targetPort: 53
+      enctcp:
+        enabled: true
+        port: 853
+        protocol: TCP
+        targetPort: 853
+      encudp:
+        enabled: true
+        port: 853
+        protocol: UDP
+        targetPort: 853
 
 persistence:
   config:
