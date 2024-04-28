@@ -1,0 +1,20 @@
+apiVersion: v2
+name: wireguard-operator
+appVersion: '2.0.28'
+version: '0.1.0'
+kubeVersion: '>=1.22.0-0'
+description: A helm chart for wireguard-operator.
+home: https://github.com/jodevsa/wireguard-operator
+keywords:
+  - kubernetes
+  - helm
+  - wireguard
+maintainers:
+  - name: MacroPower
+    email: jacobcolvin1@gmail.com
+annotations:
+  artifacthub.io/links: |
+    - name: source
+      url: https://github.com/jodevsa/wireguard-operator
+    - name: chart
+      url: https://github.com/MacroPower/helm-charts/tree/main/charts/wireguard-operator

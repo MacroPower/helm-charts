@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    control-plane: controller-manager
+  name: wireguard-controller-manager
+  namespace: wireguard-system
+spec:
+  replicas: {{ .Values.manager.replicaCount }}
+  selector:
+    matchLabels:
+      control-plane: controller-manager
+  template:
+    metadata:
+      annotations:
+        kubectl.kubernetes.io/default-container: manager
+      labels:
+        control-plane: controller-manager
+    spec:
+      containers:
+        - args:
+            - --secure-listen-address=0.0.0.0:8443
+            - --upstream=http://127.0.0.1:8080/
+            - --logtostderr=true
+            - --v=0
+          image: "{{ .Values.manager.kubeRbacProxy.image.repository }}:{{ .Values.manager.kubeRbacProxy.image.tag }}"
+          name: kube-rbac-proxy
+          ports:
+            - containerPort: 8443
+              name: https
+              protocol: TCP
+          {{- with .Values.manager.kubeRbacProxy.resources }}
+          resources:
+          {{- toYaml . | nindent 12 }}
+          {{- end }}
+        - args:
+            - --health-probe-bind-address=:8081
+            - --metrics-bind-address=127.0.0.1:8080
+            - --leader-elect
+            - --agent-image={{ .Values.agent.image.repository }}:{{ .Values.agent.image.tag }}
+          command:
+            - /manager
+          image: "{{ .Values.manager.image.repository }}:{{ .Values.manager.image.tag }}"
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8081
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          name: manager
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: 8081
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          {{- with .Values.manager.resources }}
+          resources:
+          {{- toYaml . | nindent 12 }}
+          {{- end }}
+          securityContext:
+            allowPrivilegeEscalation: false
+      securityContext:
+        runAsNonRoot: true
+      serviceAccountName: wireguard-controller-manager
+      terminationGracePeriodSeconds: 10
