@@ -15,4 +15,4 @@ data:
 kind: ConfigMap
 metadata:
   name: wireguard-manager-config
-  namespace: wireguard-system
+  namespace: {{ .Release.Namespace }}

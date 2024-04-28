@@ -4,7 +4,7 @@ metadata:
   labels:
     control-plane: controller-manager
   name: wireguard-controller-manager
-  namespace: wireguard-system
+  namespace: {{ .Release.Namespace }}
 spec:
   replicas: {{ .Values.manager.replicaCount }}
   selector:
