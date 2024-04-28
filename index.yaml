@@ -1003,6 +1003,30 @@ entries:
           url: https://github.com/MacroPower/helm-charts/tree/main/charts/wireguard-operator
     apiVersion: v2
     appVersion: 2.0.28
+    created: "2024-04-28T19:28:04.318748436Z"
+    description: A helm chart for wireguard-operator.
+    digest: 8664dddf4840ed7e4c33dfe59e03ccac7e3931e40f4493279c1724e0ff7c44ae
+    home: https://github.com/jodevsa/wireguard-operator
+    keywords:
+    - kubernetes
+    - helm
+    - wireguard
+    kubeVersion: '>=1.22.0-0'
+    maintainers:
+    - email: jacobcolvin1@gmail.com
+      name: MacroPower
+    name: wireguard-operator
+    urls:
+    - https://github.com/MacroPower/helm-charts/releases/download/wireguard-operator-0.2.0/wireguard-operator-0.2.0.tgz
+    version: 0.2.0
+  - annotations:
+      artifacthub.io/links: |
+        - name: source
+          url: https://github.com/jodevsa/wireguard-operator
+        - name: chart
+          url: https://github.com/MacroPower/helm-charts/tree/main/charts/wireguard-operator
+    apiVersion: v2
+    appVersion: 2.0.28
     created: "2024-04-28T19:17:27.259817398Z"
     description: A helm chart for wireguard-operator.
     digest: 0f151fa166de00256362e8b4a2a2ad9d2cf2ebef06293eed86227699881f1af1
@@ -1019,4 +1043,4 @@ entries:
     urls:
     - https://github.com/MacroPower/helm-charts/releases/download/wireguard-operator-0.1.0/wireguard-operator-0.1.0.tgz
     version: 0.1.0
-generated: "2024-04-28T19:17:27.259916934Z"
+generated: "2024-04-28T19:28:04.318844906Z"
