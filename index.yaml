@@ -280,6 +280,27 @@ entries:
     version: 1.0.0
   ocis:
   - apiVersion: v2
+    appVersion: 5.0.2
+    created: "2024-04-28T18:26:28.550292919Z"
+    description: ownCloud Infinite Scale (oCIS) Helm chart
+    digest: 87dc679205b394ba64c4f3ed77e7dcdd3c73bb3e6ad89380a8f072994594d3d4
+    keywords:
+    - owncloud
+    - ocis
+    maintainers:
+    - email: devops@owncloud.com
+      name: ownCloud GmbH
+      url: https://owncloud.com
+    name: ocis
+    sources:
+    - https://github.com/owncloud/ocis-charts
+    - https://github.com/owncloud/ocis
+    - https://github.com/cs3org/reva
+    type: application
+    urls:
+    - https://github.com/MacroPower/helm-charts/releases/download/ocis-0.7.0/ocis-0.7.0.tgz
+    version: 0.7.0
+  - apiVersion: v2
     appVersion: 4.0.4
     created: "2024-01-07T03:44:23.365130078Z"
     description: ownCloud Infinite Scale (oCIS) Helm chart
@@ -973,4 +994,4 @@ entries:
     urls:
     - https://github.com/MacroPower/helm-charts/releases/download/wakatime-exporter-0.1.0/wakatime-exporter-0.1.0.tgz
     version: 0.1.0
-generated: "2024-01-07T03:44:23.365204627Z"
+generated: "2024-04-28T18:26:28.550355365Z"
