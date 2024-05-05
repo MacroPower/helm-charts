@@ -259,6 +259,35 @@ entries:
     urls:
     - https://github.com/MacroPower/helm-charts/releases/download/inlets-server-0.1.0/inlets-server-0.1.0.tgz
     version: 0.1.0
+  kubernetes-python:
+  - annotations:
+      artifacthub.io/links: |
+        - name: source
+          url: https://github.com/MacroPower/containers/pkgs/container/kubernetes-python
+        - name: chart
+          url: https://github.com/MacroPower/helm-charts/tree/main/charts/kubernetes-python
+    apiVersion: v2
+    appVersion: "1.0"
+    created: "2024-05-05T18:20:11.911193137Z"
+    dependencies:
+    - name: common
+      repository: https://bjw-s.github.io/helm-charts
+      version: 3.1.0
+    description: A helm chart for kubernetes-python.
+    digest: 1db41188ad9d92ad9333ff41b64980233476e5d4fbd6788ed16a746fe4201748
+    home: https://github.com/MacroPower/containers/pkgs/container/kubernetes-python
+    keywords:
+    - kubernetes
+    - helm
+    - python
+    kubeVersion: '>=1.22.0-0'
+    maintainers:
+    - email: jacobcolvin1@gmail.com
+      name: MacroPower
+    name: kubernetes-python
+    urls:
+    - https://github.com/MacroPower/helm-charts/releases/download/kubernetes-python-0.1.0/kubernetes-python-0.1.0.tgz
+    version: 0.1.0
   local-volume-static-provisioner:
   - apiVersion: v2
     appVersion: 2.5.0
@@ -1043,4 +1072,4 @@ entries:
     urls:
     - https://github.com/MacroPower/helm-charts/releases/download/wireguard-operator-0.1.0/wireguard-operator-0.1.0.tgz
     version: 0.1.0
-generated: "2024-04-28T19:28:04.318844906Z"
+generated: "2024-05-05T18:20:11.911251566Z"
