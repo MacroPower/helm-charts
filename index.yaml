@@ -268,6 +268,34 @@ entries:
           url: https://github.com/MacroPower/helm-charts/tree/main/charts/kubernetes-python
     apiVersion: v2
     appVersion: "1.0"
+    created: "2024-05-05T18:39:27.951036215Z"
+    dependencies:
+    - name: common
+      repository: https://bjw-s.github.io/helm-charts
+      version: 3.1.0
+    description: A helm chart for kubernetes-python.
+    digest: 5fc00cb99e2d1218c94bcc102ec84ae7d49b02597a5be2bb4bf84ac42a7965fb
+    home: https://github.com/MacroPower/containers/pkgs/container/kubernetes-python
+    keywords:
+    - kubernetes
+    - helm
+    - python
+    kubeVersion: '>=1.22.0-0'
+    maintainers:
+    - email: jacobcolvin1@gmail.com
+      name: MacroPower
+    name: kubernetes-python
+    urls:
+    - https://github.com/MacroPower/helm-charts/releases/download/kubernetes-python-0.1.1/kubernetes-python-0.1.1.tgz
+    version: 0.1.1
+  - annotations:
+      artifacthub.io/links: |
+        - name: source
+          url: https://github.com/MacroPower/containers/pkgs/container/kubernetes-python
+        - name: chart
+          url: https://github.com/MacroPower/helm-charts/tree/main/charts/kubernetes-python
+    apiVersion: v2
+    appVersion: "1.0"
     created: "2024-05-05T18:20:11.911193137Z"
     dependencies:
     - name: common
@@ -1072,4 +1100,4 @@ entries:
     urls:
     - https://github.com/MacroPower/helm-charts/releases/download/wireguard-operator-0.1.0/wireguard-operator-0.1.0.tgz
     version: 0.1.0
-generated: "2024-05-05T18:20:11.911251566Z"
+generated: "2024-05-05T18:39:27.951389818Z"
