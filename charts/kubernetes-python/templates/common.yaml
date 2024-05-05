@@ -1,0 +1,26 @@
+---
+{{- include "bjw-s.common.loader.init" . }}
+
+{{- define "app-template.serviceAccountName" -}}
+{{- if .Values.serviceAccount.name -}}
+{{- .Values.serviceAccount.name -}}
+{{- else if (.Values.global).nameOverride -}}
+{{- .Values.global.nameOverride -}}
+{{- else -}}
+{{- .Release.Name -}}
+{{- end -}}
+{{- end -}}
+
+{{- define "app-template.hardcodedValues" -}}
+# Set the nameOverride based on the release name if no override has been set
+{{ if not .Values.global.nameOverride }}
+global:
+  nameOverride: "{{ .Release.Name }}"
+{{ end }}
+serviceAccount:
+  name: "{{ include "app-template.serviceAccountName" . }}"
+{{- end -}}
+{{- $_ := mergeOverwrite .Values (include "app-template.hardcodedValues" . | fromYaml) -}}
+
+{{/* Render the templates */}}
+{{ include "bjw-s.common.loader.generate" . }}

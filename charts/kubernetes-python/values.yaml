@@ -1,0 +1,82 @@
+---
+controllers:
+  main:
+    enabled: true
+    type: job
+    job:
+      ttlSecondsAfterFinished: 3600
+      backoffLimit: 6
+    pod:
+      automountServiceAccountToken: true
+      restartPolicy: OnFailure
+      securityContext: {}
+    containers:
+      main:
+        image:
+          repository: ghcr.io/macropower/kubernetes-python
+          tag: "1.0"
+          pullPolicy: IfNotPresent
+        command: ["/bin/sh", "-c"]
+        args:
+          - |
+            ls -la /usr/src/scripts;
+            python /usr/src/scripts/main.py;
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 1000
+          runAsGroup: 3000
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop: [ALL]
+        resources:
+          requests:
+            cpu: 100m
+            memory: 300Mi
+          limits:
+            memory: 300Mi
+
+serviceAccount:
+  # -- Specifies whether a service account should be created
+  create: true
+
+  # -- Annotations to add to the service account
+  annotations: {}
+
+  # -- Labels to add to the service account
+  labels: {}
+
+  # -- The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+  roleRules: []
+  # - apiGroups: [""]
+  #   resources: ["secrets"]
+  #   verbs: ["create", "patch", "delete", "get", "update"]
+
+persistence:
+  pip-cache:
+    type: emptyDir
+    globalMounts:
+      - path: /.cache/pip
+        readOnly: false
+  local:
+    type: emptyDir
+    globalMounts:
+      - path: /.local
+        readOnly: false
+  tmp:
+    type: emptyDir
+    globalMounts:
+      - path: /tmp
+        readOnly: false
+  # script:
+  #   type: configMap
+  #   identifier: script
+  #   items:
+  #     - key: main.py
+  #       path: main.py
+  #   globalMounts:
+  #     - path: /usr/src/scripts/main.py
+  #       subPath: main.py
+  #       readOnly: true
