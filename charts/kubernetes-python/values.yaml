@@ -19,7 +19,6 @@ controllers:
         command: ["/bin/sh", "-c"]
         args:
           - |
-            ls -la /usr/src/scripts;
             python /usr/src/scripts/main.py;
         securityContext:
           runAsNonRoot: true
@@ -72,7 +71,7 @@ persistence:
         readOnly: false
   # script:
   #   type: configMap
-  #   identifier: script
+  #   name: existing-configmap-name
   #   items:
   #     - key: main.py
   #       path: main.py
