@@ -152,6 +152,17 @@ entries:
     urls:
     - https://github.com/MacroPower/helm-charts/releases/download/common-0.1.0/common-0.1.0.tgz
     version: 0.1.0
+  dragonfly-operator:
+  - apiVersion: v2
+    appVersion: v1.1.2
+    created: "2024-06-09T04:13:51.180489913Z"
+    description: A Helm chart for dragonfly-operator
+    digest: 8ed211f6b7933cb6d83211015da8504c03af0b52f198d541654270e282d63514
+    name: dragonfly-operator
+    type: application
+    urls:
+    - https://github.com/MacroPower/helm-charts/releases/download/dragonfly-operator-0.1.1/dragonfly-operator-0.1.1.tgz
+    version: 0.1.1
   inlets-client:
   - apiVersion: v2
     appVersion: 4.0.0
@@ -1121,4 +1132,4 @@ entries:
     urls:
     - https://github.com/MacroPower/helm-charts/releases/download/wireguard-operator-0.1.0/wireguard-operator-0.1.0.tgz
     version: 0.1.0
-generated: "2024-06-09T03:53:05.917890841Z"
+generated: "2024-06-09T04:13:51.180572107Z"
