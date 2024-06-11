@@ -54,13 +54,8 @@ spec:
               value: {{ .Values.features.basicAuthentication | quote }}
 
             - name: PROXY_OIDC_ISSUER
-            {{- if not .Values.features.externalUserManagement.enabled }}
-              value: "https://{{ .Values.externalDomain }}"
-            {{- else }}
-              value: {{ required "features.externalUserManagement.oidc.issuerURI must be set when features.externalUserManagement.enabled is set to true" .Values.features.externalUserManagement.oidc.issuerURI | quote }}
-            {{- end }}
+              value: {{ .Values.features.externalUserManagement.oidc.issuerURI | quote }}
 
-            {{- if .Values.features.externalUserManagement.enabled }}
             - name: PROXY_OIDC_REWRITE_WELLKNOWN
               value: "true"
 
@@ -74,7 +69,6 @@ spec:
 
             - name: PROXY_OIDC_SKIP_CLIENT_ID_CHECK
               value: "true"
-            {{- end }}
 
             - name: PROXY_TLS
               value: "false"

@@ -321,6 +321,9 @@ features:
       # Set to "jwt" or "none"
       accessTokenVerifyMethod: "jwt"
 
+      # -- OIDC Scope
+      scope: "openid profile email"
+
       # Configure OIDC role assignment. If activated, oCIS will read the role assigment from the OIDC token, see
       # xref:{s-path}/proxy.adoc#automatic-role-assignments[Automatic Role Assignments]
       roleAssignment:
