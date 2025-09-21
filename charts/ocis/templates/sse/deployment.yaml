@@ -1,4 +1,3 @@
-{{ if not .Values.features.sse.disabled }}
 {{- include "ocis.basicServiceTemplates" (dict "scope" . "appName" "appNameSSE" "appNameSuffix" "") -}}
 apiVersion: apps/v1
 kind: Deployment
@@ -8,13 +7,11 @@ spec:
   {{- if and (not .Values.autoscaling.enabled) (.Values.replicas) }}
   replicas: {{ .Values.replicas }}
   {{- end }}
-  {{- if .Values.deploymentStrategy }}
-  strategy: {{ toYaml .Values.deploymentStrategy | nindent 4 }}
-  {{ end }}
+  {{- include "ocis.deploymentStrategy" . | nindent 2 }}
   template:
     {{- include "ocis.templateMetadata" (dict "scope" $ "configCheck" false) | nindent 4 }}
     spec:
-      {{- include "ocis.affinity" .Values.services.postprocessing | nindent 6 }}
+      {{- include "ocis.affinity" $ | nindent 6 }}
       {{- include "ocis.securityContextAndtopologySpreadConstraints" . | nindent 6 }}
       {{- include "ocis.priorityClassName" $.priorityClassName | nindent 6 }}
       {{- include "ocis.hostAliases" $ | nindent 6 }}
@@ -56,13 +53,18 @@ spec:
             - name: SSE_HTTP_ADDR
               value: 0.0.0.0:9939
 
+            - name: SSE_KEEPALIVE_INTERVAL
+              value: {{ .Values.services.sse.connections.keepaliveInterval | quote }}
+
             - name: SSE_JWT_SECRET
               valueFrom:
                 secretKeyRef:
                   name: {{ include "secrets.jwtSecret" . }}
                   key: jwt-secret
 
-            # {{- include "ocis.livenessProbe" . | nindent 10 }}
+            {{- include "ocis.caEnv" $ | nindent 12}}
+
+            {{- include "ocis.livenessProbe" . | nindent 10 }}
 
           resources: {{ toYaml .resources | nindent 12 }}
 
@@ -73,16 +75,13 @@ spec:
               containerPort: 9135
 
           volumeMounts:
-            - name: ocis-config-tmp
-              mountPath: /etc/ocis # we mount that volume only to apply fsGroup to that path
             - name: messaging-system-ca
               mountPath: /etc/ocis/messaging-system-ca
               readOnly: true
+            {{- include "ocis.caPath" $ | nindent 12}}
 
       {{- include "ocis.imagePullSecrets" $ | nindent 6 }}
       volumes:
-        - name: ocis-config-tmp
-          emptyDir: {}
         - name: messaging-system-ca
           {{ if and (.Values.messagingSystem.external.enabled) (not .Values.messagingSystem.external.tls.certTrusted) }}
           secret:
@@ -90,4 +89,4 @@ spec:
           {{ else }}
           emptyDir: {}
           {{ end }}
-{{ end }}
+        {{- include "ocis.caVolume" $ | nindent 8}}

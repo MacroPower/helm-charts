@@ -11,7 +11,7 @@ spec:
   template:
     {{- include "ocis.templateMetadata" (dict "scope" $ "configCheck" false) | nindent 4 }}
     spec:
-      {{- include "ocis.affinity" .Values.services.storagesystem | nindent 6 }}
+      {{- include "ocis.affinity" $ | nindent 6 }}
       {{- include "ocis.securityContextAndtopologySpreadConstraints" . | nindent 6 }}
       {{- if and $.Values.services.storagesystem.persistence.enabled $.Values.services.storagesystem.persistence.chownInitContainer }}
       initContainers:
@@ -72,8 +72,6 @@ spec:
 
             - name: STORAGE_SYSTEM_DRIVER
               value: ocis
-            - name: STORAGE_SYSTEM_OCIS_METADATA_BACKEND
-              value: messagepack
 
             - name: STORAGE_SYSTEM_JWT_SECRET
               valueFrom:
@@ -93,6 +91,8 @@ spec:
                   name: {{ include "secrets.storageSystemSecret" . }}
                   key: user-id
 
+            {{- include "ocis.caEnv" $ | nindent 12}}
+
           {{- include "ocis.livenessProbe" . | nindent 10 }}
 
           resources: {{ toYaml .resources | nindent 12 }}
@@ -110,9 +110,11 @@ spec:
               mountPath: /tmp
             - name: {{ include "ocis.persistence.dataVolumeName" . }}
               mountPath: /var/lib/ocis
+            {{- include "ocis.caPath" $ | nindent 12}}
 
       {{- include "ocis.imagePullSecrets" $ | nindent 6 }}
       volumes:
         - name: tmp-volume
           emptyDir: {}
+        {{- include "ocis.caVolume" $ | nindent 8}}
         {{- include "ocis.persistence.dataVolume" . | nindent 8 }}

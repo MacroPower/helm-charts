@@ -1,4 +1,18 @@
 {{- include "ocis.basicServiceTemplates" (dict "scope" . "appName" "appNameFrontend" "appNameSuffix" "") -}}
+{{- if .Values.features.appsIntegration.enabled }}
+{{- range $officeSuite := .Values.features.appsIntegration.wopiIntegration.officeSuites }}
+{{- if $officeSuite.enabled }}
+{{- if $officeSuite.secureViewEnabled }}
+{{- if not $.secureViewApp }}
+{{- $_ := set $ "secureViewApp" (print "com.owncloud.api.collaboration." $officeSuite.name) }}
+{{- else }}
+{{ fail "Only one office with secureView enabled allowed" }}
+{{- end }}
+{{- end }}
+{{- end }}
+{{- end }}
+{{ end }}
+---
 apiVersion: apps/v1
 kind: Deployment
 {{ include "ocis.metadata" . }}
@@ -11,7 +25,7 @@ spec:
   template:
     {{- include "ocis.templateMetadata" (dict "scope" $ "configCheck" true) | nindent 4 }}
     spec:
-      {{- include "ocis.affinity" .Values.services.frontend | nindent 6 }}
+      {{- include "ocis.affinity" $ | nindent 6 }}
       {{- include "ocis.securityContextAndtopologySpreadConstraints" . | nindent 6 }}
       {{- include "ocis.priorityClassName" $.priorityClassName | nindent 6 }}
       {{- include "ocis.hostAliases" $ | nindent 6 }}
@@ -26,10 +40,6 @@ spec:
             {{- include "ocis.serviceRegistry" . | nindent 12 }}
             {{- include "ocis.cors" . |nindent 12 }}
             {{- include "ocis.events" . | nindent 12 }}
-
-            # TODO: this is a workaround, remove it after https://github.com/owncloud/ocis/issues/8380 is closed
-            - name: OCIS_CORS_ALLOW_METHODS
-              value: "OPTIONS,HEAD,GET,PUT,POST,PATCH,DELETE,MKCOL,PROPFIND,PROPPATCH,MOVE,COPY,REPORT,SEARCH"
 
             - name: FRONTEND_LOG_COLOR
               value: {{ .Values.logging.color | quote }}
@@ -73,7 +83,10 @@ spec:
 
             - name: FRONTEND_APP_HANDLER_INSECURE
               value: {{ .Values.insecure.ocisHttpApiInsecure | quote }}
-
+            {{ with .secureViewApp }}
+            - name: FRONTEND_APP_HANDLER_SECURE_VIEW_APP_ADDR
+              value: {{ . | quote }}
+            {{ end }}
             - name: FRONTEND_ARCHIVER_INSECURE
               value: {{ .Values.insecure.ocisHttpApiInsecure | quote }}
 
@@ -86,9 +99,6 @@ spec:
             - name: FRONTEND_SEARCH_MIN_LENGTH
               value: {{ .Values.features.sharing.users.search.minLengthLimit | quote }}
 
-            - name: FRONTEND_ENABLE_RESHARING
-              value: {{ .Values.features.sharing.users.resharing | quote }}
-
             - name: FRONTEND_ARCHIVER_MAX_SIZE
               value: {{ int64 .Values.features.archiver.maxSize | quote }}
 
@@ -98,11 +108,8 @@ spec:
             - name: FRONTEND_FULL_TEXT_SEARCH_ENABLED
               value: {{ not (eq .Values.services.search.extractor.type "basic") | quote }}
 
-            - name: FRONTEND_SHOW_USER_EMAIL_IN_RESULTS
+            - name: OCIS_SHOW_USER_EMAIL_IN_RESULTS
               value: {{ .Values.features.sharing.users.search.showUserEmail | quote }}
-
-            - name: OCIS_DISABLE_SSE
-              value: {{ .Values.features.sse.disabled | quote }}
 
             # cache
             # the stat cache is disabled for now for performance reasons, see https://github.com/owncloud/ocis-charts/issues/214
@@ -142,6 +149,8 @@ spec:
 
             - name: FRONTEND_AUTO_ACCEPT_SHARES
               value: {{ .Values.features.sharing.autoAcceptShares | quote }}
+            - name: FRONTEND_MAX_CONCURRENCY
+              value: {{ .Values.services.frontend.events.consumer.concurrency | quote }}
 
             # password policies
             - name: FRONTEND_PASSWORD_POLICY_MIN_CHARACTERS
@@ -157,6 +166,21 @@ spec:
             - name: FRONTEND_PASSWORD_POLICY_BANNED_PASSWORDS_LIST
               value: /etc/ocis/sharing-banned-passwords.txt
 
+            {{- with .Values.features.emailNotifications.enabled }}
+            - name: FRONTEND_CONFIGURABLE_NOTIFICATIONS
+              value: {{ . | quote }}
+            {{- end }}
+
+            - name: OCIS_ENABLE_OCM
+              value: {{ .Values.features.ocm.enabled | quote }}
+
+            {{- with .Values.features.externalUserManagement.oidc.spaceAssignment.enabled }}
+            - name: OCIS_CLAIM_MANAGED_SPACES_ENABLED
+              value: {{ . | quote }}
+            {{- end }}
+
+            {{- include "ocis.caEnv" $ | nindent 12}}
+
           {{- include "ocis.livenessProbe" . | nindent 10 }}
 
           resources: {{ toYaml .resources | nindent 12 }}
@@ -168,10 +192,11 @@ spec:
               containerPort: 9141
 
           volumeMounts:
-            - name: configs
-              mountPath: /etc/ocis
             - name: tmp-volume
               mountPath: /tmp
+            - name: configs
+              mountPath: /etc/ocis
+            {{- include "ocis.caPath" $ | nindent 12}}
 
       {{- include "ocis.imagePullSecrets" $ | nindent 6 }}
       volumes:
@@ -180,3 +205,4 @@ spec:
         - name: configs
           configMap:
             name: sharing-banned-passwords-{{ .appName }}
+        {{- include "ocis.caVolume" $ | nindent 8}}

@@ -12,7 +12,7 @@ spec:
   template:
     {{- include "ocis.templateMetadata" (dict "scope" $ "configCheck" false) | nindent 4 }}
     spec:
-      {{- include "ocis.affinity" .Values.services.notifications | nindent 6 }}
+      {{- include "ocis.affinity" $ | nindent 6 }}
       {{- include "ocis.securityContextAndtopologySpreadConstraints" . | nindent 6 }}
       {{- include "ocis.priorityClassName" $.priorityClassName | nindent 6 }}
       {{- include "ocis.hostAliases" $ | nindent 6 }}
@@ -26,6 +26,7 @@ spec:
           env:
             {{- include "ocis.serviceRegistry" . | nindent 12 }}
             {{- include "ocis.events" . | nindent 12 }}
+            {{- include "ocis.persistentStore" . | nindent 12 }}
 
             - name: OCIS_DEFAULT_LANGUAGE
               value: {{ default "en" .Values.features.language.default | quote }}
@@ -98,6 +99,8 @@ spec:
               value: /etc/ocis/notifications
             {{- end }}
 
+            {{- include "ocis.caEnv" $ | nindent 12}}
+
           {{- include "ocis.livenessProbe" . | nindent 10 }}
 
           resources: {{ toYaml .resources | nindent 12 }}
@@ -106,8 +109,6 @@ spec:
               containerPort: 9174
 
           volumeMounts:
-            - name: ocis-config-tmp
-              mountPath: /etc/ocis # we mount that volume only to apply fsGroup to that path
             - name: messaging-system-ca
               mountPath: /etc/ocis/messaging-system-ca
               readOnly: true
@@ -119,11 +120,10 @@ spec:
             - name: html-mail-images
               mountPath: /etc/ocis/notifications/templates/html/img
             {{- end }}
+            {{- include "ocis.caPath" $ | nindent 12}}
 
       {{- include "ocis.imagePullSecrets" $ | nindent 6 }}
       volumes:
-        - name: ocis-config-tmp
-          emptyDir: {}
         - name: messaging-system-ca
           {{ if and (.Values.messagingSystem.external.enabled) (not .Values.messagingSystem.external.tls.certTrusted) }}
           secret:
@@ -143,4 +143,5 @@ spec:
             name: {{ .Values.features.emailNotifications.branding.htmlMailImagesConfigRef | quote }}
             optional: true
         {{- end }}
+        {{- include "ocis.caVolume" $ | nindent 8}}
 {{- end }}

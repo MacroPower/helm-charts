@@ -9,7 +9,10 @@ metadata:
   labels:
     {{- include "ocis.labels" . | nindent 4 }}
 spec:
-  schedule: "{{ .Values.services.storageusers.maintenance.cleanUpExpiredUploads.schedule }}"
+  schedule: {{ .Values.services.storageusers.maintenance.cleanUpExpiredUploads.schedule | quote }}
+  {{- with .Values.services.storageusers.maintenance.cleanUpExpiredUploads.timezone }}
+  timeZone: {{ . | quote }}
+  {{- end }}
   successfulJobsHistoryLimit: 3
   failedJobsHistoryLimit: 3
   concurrencyPolicy: Forbid
@@ -26,6 +29,7 @@ spec:
             {{- include "ocis.labels" . | nindent 12 }}
         spec:
           restartPolicy: Never
+          {{- include "ocis.securityContextAndtopologySpreadConstraints" . | nindent 10 }}
           {{- include "ocis.priorityClassName" $.jobPriorityClassName | nindent 10 }}
           {{- include "ocis.hostAliases" $ | nindent 10 }}
           nodeSelector: {{ toYaml $.jobNodeSelector | nindent 12 }}
@@ -33,7 +37,7 @@ spec:
             - name: storage-users-clean-expired-uploads
               {{- include "ocis.jobContainerImageOcis" . | nindent 14 }}
               command: ["ocis"]
-              args: ["storage-users", "uploads", "clean"]
+              args: ["storage-users", "uploads", "sessions", "--clean"]
               securityContext:
                 runAsNonRoot: true
                 runAsUser: {{ .Values.securityContext.runAsUser }}
@@ -59,8 +63,6 @@ spec:
                 {{- if  eq .Values.services.storageusers.storageBackend.driver "s3ng" }}
                 - name: STORAGE_USERS_DRIVER
                   value: s3ng
-                - name: STORAGE_USERS_S3NG_METADATA_BACKEND
-                  value: {{ .Values.services.storageusers.storageBackend.driverConfig.s3ng.metadataBackend | quote }}
                 - name: STORAGE_USERS_S3NG_ENDPOINT
                   value: {{ .Values.services.storageusers.storageBackend.driverConfig.s3ng.endpoint | quote }}
                 - name: STORAGE_USERS_S3NG_REGION
@@ -108,6 +110,8 @@ spec:
                       name: {{ include "secrets.serviceAccountSecret" . }}
                       key: service-account-secret
 
+                {{- include "ocis.caEnv" $ | nindent 16}}
+
               resources: {{ toYaml .jobResources | nindent 16 }}
 
               volumeMounts:
@@ -115,12 +119,14 @@ spec:
                   mountPath: /tmp
                 - name: {{ include "ocis.persistence.dataVolumeName" . }}
                   mountPath: /var/lib/ocis
+                {{- include "ocis.caPath" $ | nindent 16}}
 
           {{- include "ocis.imagePullSecrets" $ | nindent 10 }}
           volumes:
             - name: tmp-volume
               emptyDir: {}
             {{- include "ocis.persistence.dataVolume" . | nindent 12 }}
+            {{- include "ocis.caVolume" $ | nindent 12}}
 {{ end }}
 {{- if .Values.services.storageusers.persistence.enabled }}
 {{- include "ocis.basicServiceTemplates" (dict "scope" . "appName" "appNameStorageUsers" "appNameSuffix" "") -}}
@@ -133,7 +139,10 @@ metadata:
   labels:
     {{- include "ocis.labels" . | nindent 4 }}
 spec:
-  schedule: "{{ .Values.services.storageusers.maintenance.purgeExpiredTrashBinItems.schedule }}"
+  schedule: {{ .Values.services.storageusers.maintenance.purgeExpiredTrashBinItems.schedule | quote }}
+  {{- with .Values.services.storageusers.maintenance.purgeExpiredTrashBinItems.timezone }}
+  timeZone: {{ . | quote }}
+  {{- end }}
   successfulJobsHistoryLimit: 3
   failedJobsHistoryLimit: 3
   concurrencyPolicy: Forbid
@@ -151,6 +160,8 @@ spec:
 
         spec:
           restartPolicy: Never
+          {{- include "ocis.securityContextAndtopologySpreadConstraints" . | nindent 10 }}
+          {{- include "ocis.priorityClassName" $.jobPriorityClassName | nindent 10 }}
           {{- include "ocis.hostAliases" $ | nindent 10 }}
           nodeSelector: {{ toYaml $.jobNodeSelector | nindent 12 }}
           containers:
@@ -204,6 +215,8 @@ spec:
                       name: {{ include "secrets.serviceAccountSecret" . }}
                       key: service-account-secret
 
+                {{- include "ocis.caEnv" $ | nindent 16}}
+
               resources: {{ toYaml .jobResources | nindent 16 }}
 
               volumeMounts:
@@ -211,12 +224,14 @@ spec:
                   mountPath: /tmp
                 - name: {{ include "ocis.persistence.dataVolumeName" . }}
                   mountPath: /var/lib/ocis
+                {{- include "ocis.caPath" $ | nindent 16}}
 
           {{- include "ocis.imagePullSecrets" $ | nindent 10 }}
           volumes:
             - name: tmp-volume
               emptyDir: {}
             {{- include "ocis.persistence.dataVolume" . | nindent 12 }}
+            {{- include "ocis.caVolume" $ | nindent 12}}
 {{ end }}
 
 {{- if .Values.services.storageusers.persistence.enabled }}
@@ -230,7 +245,10 @@ metadata:
   labels:
     {{- include "ocis.labels" . | nindent 4 }}
 spec:
-  schedule: "{{ .Values.services.storageusers.maintenance.restartPostprocessing.schedule }}"
+  schedule: {{ .Values.services.storageusers.maintenance.restartPostprocessing.schedule | quote }}
+  {{- with .Values.services.storageusers.maintenance.restartPostprocessing.timezone }}
+  timeZone: {{ . | quote }}
+  {{- end }}
   successfulJobsHistoryLimit: 3
   failedJobsHistoryLimit: 3
   concurrencyPolicy: Forbid
@@ -248,6 +266,8 @@ spec:
 
         spec:
           restartPolicy: Never
+          {{- include "ocis.securityContextAndtopologySpreadConstraints" . | nindent 10 }}
+          {{- include "ocis.priorityClassName" $.jobPriorityClassName | nindent 10 }}
           {{- include "ocis.hostAliases" $ | nindent 10 }}
           nodeSelector: {{ toYaml $.jobNodeSelector | nindent 12 }}
           containers:
@@ -301,6 +321,8 @@ spec:
                       name: {{ include "secrets.serviceAccountSecret" . }}
                       key: service-account-secret
 
+                {{- include "ocis.caEnv" $ | nindent 16}}
+
               resources: {{ toYaml .jobResources | nindent 16 }}
 
               volumeMounts:
@@ -308,10 +330,12 @@ spec:
                   mountPath: /tmp
                 - name: {{ include "ocis.persistence.dataVolumeName" . }}
                   mountPath: /var/lib/ocis
+                {{- include "ocis.caPath" $ | nindent 16}}
 
           {{- include "ocis.imagePullSecrets" $ | nindent 10 }}
           volumes:
             - name: tmp-volume
               emptyDir: {}
+            {{- include "ocis.caVolume" $ | nindent 12}}
             {{- include "ocis.persistence.dataVolume" . | nindent 12 }}
 {{ end }}

@@ -11,7 +11,7 @@ spec:
   template:
     {{- include "ocis.templateMetadata" (dict "scope" $ "configCheck" false) | nindent 4 }}
     spec:
-      {{- include "ocis.affinity" .Values.services.groups | nindent 6 }}
+      {{- include "ocis.affinity" $ | nindent 6 }}
       {{- include "ocis.securityContextAndtopologySpreadConstraints" . | nindent 6 }}
       {{- include "ocis.priorityClassName" $.priorityClassName | nindent 6 }}
       {{- include "ocis.hostAliases" $ | nindent 6 }}
@@ -112,7 +112,7 @@ spec:
               value: {{ .Values.features.externalUserManagement.ldap.uri | quote }}
             {{ end }}
             - name: GROUPS_LDAP_CACERT
-              {{ if or (not .Values.features.externalUserManagement.enabled) ( not .Values.features.externalUserManagement.ldap.certTrusted) }}
+              {{ if or (not .Values.features.externalUserManagement.enabled) (not .Values.features.externalUserManagement.ldap.certTrusted) }}
               value: /etc/ocis/ldap-ca/ldap-ca.crt
               {{ else }}
               value: "" # no cert needed
@@ -142,6 +142,8 @@ spec:
                   name: {{ include "secrets.jwtSecret" . }}
                   key: jwt-secret
 
+            {{- include "ocis.caEnv" $ | nindent 12}}
+
           {{- include "ocis.livenessProbe" . | nindent 10 }}
 
           resources: {{ toYaml .resources | nindent 12 }}
@@ -155,22 +157,20 @@ spec:
           volumeMounts:
             - name: tmp-volume
               mountPath: /tmp
-            - name: ocis-config-tmp
-              mountPath: /etc/ocis # we mount that volume only to apply fsGroup to that path
             - name: ldap-ca
               mountPath: /etc/ocis/ldap-ca
               readOnly: true
+            {{- include "ocis.caPath" $ | nindent 12}}
 
       {{- include "ocis.imagePullSecrets" $ | nindent 6 }}
       volumes:
         - name: tmp-volume
           emptyDir: {}
-        - name: ocis-config-tmp
-          emptyDir: {}
         - name: ldap-ca
-          {{ if or (not .Values.features.externalUserManagement.enabled) ( not .Values.features.externalUserManagement.ldap.certTrusted) }}
+          {{ if or (not .Values.features.externalUserManagement.enabled) (not .Values.features.externalUserManagement.ldap.certTrusted) }}
           secret:
             secretName: {{ include "secrets.ldapCASecret" . }}
           {{ else }}
           emptyDir: {}
           {{ end }}
+        {{- include "ocis.caVolume" $ | nindent 8}}

@@ -33,14 +33,15 @@ Adds the app names to the scope and set the name of the app based on the input p
 @param .appNameSuffix  The suffix to be added to the appName (if needed)
 */}}
 {{- define "ocis.basicServiceTemplates" -}}
-  {{- $_ := set .scope "appNameAppProvider" "appprovider" -}}
+  {{- $_ := set .scope "appNameActivitylog" "activitylog" -}}
   {{- $_ := set .scope "appNameAppRegistry" "appregistry" -}}
   {{- $_ := set .scope "appNameAudit" "audit" -}}
-  {{- $_ := set .scope "appNameAuthBasic" "authbasic" -}}
   {{- $_ := set .scope "appNameAuthMachine" "authmachine" -}}
   {{- $_ := set .scope "appNameAuthService" "authservice" -}}
+  {{- $_ := set .scope "appNameAuthApp" "authapp" -}}
   {{- $_ := set .scope "appNameAntivirus" "antivirus" -}}
   {{- $_ := set .scope "appNameClientlog" "clientlog" -}}
+  {{- $_ := set .scope "appNameCollaboration" "collaboration" -}}
   {{- $_ := set .scope "appNameEventhistory" "eventhistory" -}}
   {{- $_ := set .scope "appNameFrontend" "frontend" -}}
   {{- $_ := set .scope "appNameGateway" "gateway" -}}
@@ -51,6 +52,7 @@ Adds the app names to the scope and set the name of the app based on the input p
   {{- $_ := set .scope "appNameNats" "nats" -}}
   {{- $_ := set .scope "appNameNotifications" "notifications" -}}
   {{- $_ := set .scope "appNameOcdav" "ocdav" -}}
+  {{- $_ := set .scope "appNameOcm" "ocm" -}}
   {{- $_ := set .scope "appNameOcs" "ocs" -}}
   {{- $_ := set .scope "appNamePolicies" "policies" -}}
   {{- $_ := set .scope "appNamePostprocessing" "postprocessing" -}}
@@ -81,6 +83,7 @@ Adds the app names to the scope and set the name of the app based on the input p
   {{- $_ := set .scope "appSpecificConfig" (index .scope.Values.services (index .scope .appName)) -}}
   {{- end -}}
 
+  {{- $_ := set .scope "affinity" .scope.appSpecificConfig.affinity -}}
   {{- $_ := set .scope "priorityClassName" (default (default (dict) .scope.Values.priorityClassName) .scope.appSpecificConfig.priorityClassName) -}}
   {{- $_ := set .scope "jobPriorityClassName" (default (default (dict) .scope.Values.jobPriorityClassName) .scope.appSpecificConfig.jobPriorityClassName) -}}
 
@@ -97,7 +100,7 @@ oCIS PDB template
 
 */}}
 {{- define "ocis.pdb" -}}
-{{- $_ := set . "podDisruptionBudget" (default (default (dict) .Values.podDisruptionBudget) (index .Values.services .appName).podDisruptionBudget) -}}
+{{- $_ := set . "podDisruptionBudget" (default (default (dict) .Values.podDisruptionBudget) (index .Values.services (split "-" .appName)._0).podDisruptionBudget) -}}
 {{ if .podDisruptionBudget }}
 apiVersion: policy/v1
 kind: PodDisruptionBudget
@@ -126,9 +129,9 @@ spec:
 {{- end -}}
 
 {{- define "ocis.affinity" -}}
-{{- if .affinity }}
+{{- with .affinity }}
 affinity:
-  {{- toYaml .affinity | nindent 2 }}
+  {{- toYaml . | nindent 2 }}
 {{- end }}
 {{- end -}}
 
@@ -163,6 +166,10 @@ metadata:
   namespace: {{ template "ocis.namespace" . }}
   labels:
     {{- include "ocis.labels" . | nindent 4 }}
+  {{- with .Values.extraAnnotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
 {{- end -}}
 
 {{/*
@@ -225,7 +232,11 @@ oCIS deployment strategy
 {{- define "ocis.deploymentStrategy" -}}
   {{- with $.Values.deploymentStrategy }}
 strategy:
-  {{- toYaml . | nindent 2 }}
+  type: {{ .type }}
+  {{- if eq .type "RollingUpdate" }}
+  rollingUpdate:
+  {{- toYaml .rollingUpdate | nindent 4 }}
+  {{- end }}
   {{- end }}
 {{- end -}}
 
@@ -234,10 +245,12 @@ oCIS deployment CORS template
 
 */}}
 {{- define "ocis.cors" -}}
-{{- if .Values.http.cors.allow_origins }}
+{{- $origins := .Values.http.cors.allow_origins -}}
+{{- if not (has "https://{{ .Values.externalDomain }}" $origins) -}}
+{{- $origins = prepend $origins (print "https://" .Values.externalDomain) -}}
+{{- end -}}
 - name: OCIS_CORS_ALLOW_ORIGINS
-  value: {{ without .Values.http.cors.allow_origins "" | join "," | quote }}
-{{- end }}
+  value: {{ without $origins "" | join "," | quote }}
 {{- end -}}
 
 {{/*
@@ -275,6 +288,7 @@ oCIS secret wrapper
 
 @param .name          The name of the secret.
 @param .params        Dict containing data keys/values (plaintext).
+@param .labels        Dict containing labels key/values.
 @param .scope         The current scope
 */}}
 {{- define "ocis.secret" -}}
@@ -282,6 +296,10 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: {{ .name }}
+  labels:
+    {{- range $key, $value := .labels }}
+    {{ $key }}: {{ $value | quote }}
+    {{- end }}
 data:
   {{- $secretObj := (lookup "v1" "Secret" .scope.Release.Namespace .name) | default dict }}
   {{- $secretData := (get $secretObj "data") | default dict }}
@@ -296,6 +314,7 @@ oCIS ConfigMap wrapper
 
 @param .name          The name of the ConfigMap.
 @param .params        Dict containing data keys/values (plaintext).
+@param .labels        Dict containing labels key/values.
 @param .scope         The current scope
 */}}
 {{- define "ocis.configMap" -}}
@@ -303,6 +322,10 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: {{ .name }}
+  labels:
+    {{- range $key, $value := .labels }}
+    {{ $key }}: {{ $value | quote }}
+    {{- end }}
 data:
   {{- $configObj := (lookup "v1" "ConfigMap" .scope.Release.Namespace .name) | default dict }}
   {{- $configData := (get $configObj "data") | default dict }}

@@ -11,7 +11,7 @@ spec:
   template:
     {{- include "ocis.templateMetadata" (dict "scope" $ "configCheck" false) | nindent 4 }}
     spec:
-      {{- include "ocis.affinity" .Values.services.thumbnails | nindent 6 }}
+      {{- include "ocis.affinity" $ | nindent 6 }}
       {{- include "ocis.securityContextAndtopologySpreadConstraints" . | nindent 6 }}
       {{- if and $.Values.services.thumbnails.persistence.enabled $.Values.services.thumbnails.persistence.chownInitContainer }}
       initContainers:
@@ -36,6 +36,7 @@ spec:
           {{- include "ocis.containerSecurityContext" . | nindent 10 }}
           env:
             {{- include "ocis.serviceRegistry" . | nindent 12 }}
+            {{- include "ocis.cors" . |nindent 12 }}
 
             - name: THUMBNAILS_LOG_COLOR
               value: {{ .Values.logging.color | quote }}
@@ -66,6 +67,15 @@ spec:
             - name: THUMBNAILS_DATA_ENDPOINT
               value: http://{{ .appName }}:9186/thumbnails/data
 
+            - name: THUMBNAILS_MAX_CONCURRENT_REQUESTS
+              value: {{ .Values.services.thumbnails.quota.maxConcurrencyRequests | quote }}
+            - name: THUMBNAILS_MAX_INPUT_IMAGE_FILE_SIZE
+              value: {{ .Values.services.thumbnails.quota.maxFileSize | quote }}
+            - name: THUMBNAILS_MAX_INPUT_WIDTH
+              value: {{ .Values.services.thumbnails.quota.maxInputWidth | quote }}
+            - name: THUMBNAILS_MAX_INPUT_HEIGHT
+              value: {{ .Values.services.thumbnails.quota.maxInputHeight | quote }}
+
             - name: THUMBNAILS_WEBDAVSOURCE_INSECURE
               value: {{ .Values.insecure.ocisHttpApiInsecure | quote }}
 
@@ -77,6 +87,8 @@ spec:
                 secretKeyRef:
                   name: {{ include "secrets.thumbnailsSecret" . }}
                   key: thumbnails-transfer-secret
+
+            {{- include "ocis.caEnv" $ | nindent 12}}
 
           {{- include "ocis.livenessProbe" . | nindent 10 }}
 
@@ -93,7 +105,9 @@ spec:
           volumeMounts:
             - name: {{ include "ocis.persistence.dataVolumeName" . }}
               mountPath: /var/lib/ocis
+            {{- include "ocis.caPath" $ | nindent 12}}
 
       {{- include "ocis.imagePullSecrets" $ | nindent 6 }}
       volumes:
+        {{- include "ocis.caVolume" $ | nindent 8}}
         {{- include "ocis.persistence.dataVolume" . | nindent 8 }}

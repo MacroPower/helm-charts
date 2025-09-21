@@ -11,11 +11,28 @@ spec:
   template:
     {{- include "ocis.templateMetadata" (dict "scope" $ "configCheck" true) | nindent 4 }}
     spec:
-      {{- include "ocis.affinity" .Values.services.web | nindent 6 }}
+      {{- include "ocis.affinity" $ | nindent 6 }}
       {{- include "ocis.securityContextAndtopologySpreadConstraints" . | nindent 6 }}
       {{- include "ocis.priorityClassName" $.priorityClassName | nindent 6 }}
       {{- include "ocis.hostAliases" $ | nindent 6 }}
       nodeSelector: {{ toYaml $.nodeSelector | nindent 8 }}
+      {{- if or (gt (len $.Values.services.web.additionalInitContainers) 0) (and $.Values.services.web.persistence.enabled $.Values.services.web.persistence.chownInitContainer) }}
+      initContainers:
+      {{- end }}
+      {{- if and $.Values.services.web.persistence.enabled $.Values.services.web.persistence.chownInitContainer }}
+        - name: init-chown-data
+          {{- include "ocis.initContainerImage" $ | nindent 10 }}
+          securityContext:
+            runAsNonRoot: false
+            runAsUser: 0
+          {{- include "ocis.initChownDataCommand" $ | nindent 10 }}
+          volumeMounts:
+          - name: {{ include "ocis.persistence.dataVolumeName" . }}
+            mountPath: /var/lib/ocis
+      {{- end }}
+      {{- with $.Values.services.web.additionalInitContainers }}
+        {{ toYaml . | nindent 8 }}
+      {{- end }}
       containers:
         - name: {{ .appName }}
           {{- include "ocis.image" $ | nindent 10 }}
@@ -56,12 +73,10 @@ spec:
             {{- else }}
               value: {{ .Values.features.externalUserManagement.oidc.issuerURI | quote }}
             {{- end }}
-
             - name: WEB_OIDC_CLIENT_ID
-              value: {{ .Values.features.externalUserManagement.oidc.webClientID | quote }}
-
+              value: {{ .Values.services.web.config.oidc.webClientID | quote }}
             - name: WEB_OIDC_SCOPE
-              value: {{ .Values.features.externalUserManagement.oidc.scope | quote }}
+              value: {{ .Values.services.web.config.oidc.webClientScope | quote }}
 
             - name: WEB_UI_THEME_SERVER
             {{- if .Values.services.web.config.theme.server }}
@@ -135,12 +150,12 @@ spec:
               value: {{ . | quote }}
             {{- end }}
 
-            {{- with .Values.services.web.config.postLogoutRedirectURI }}
+            {{- with .Values.services.web.config.oidc.postLogoutRedirectURI }}
             - name: WEB_OIDC_POST_LOGOUT_REDIRECT_URI
               value: {{ . | quote }}
             {{- end }}
 
-            {{- with .Values.services.web.config.loginURL }}
+            {{- with .Values.services.web.config.oidc.loginURL }}
             - name: WEB_OPTION_LOGIN_URL
               value: {{ . | quote }}
             {{- end }}
@@ -150,11 +165,33 @@ spec:
               value: {{ . | quote }}
             {{- end }}
 
+            - name: WEB_OPTION_DISABLE_FEEDBACK_LINK
+              value: {{ not .Values.services.web.config.feedbackLink.enabled | quote }}
+            {{- if .Values.services.web.config.feedbackLink.enabled }}
+            {{- with .Values.services.web.config.feedbackLink.href }}
+            - name: WEB_OPTION_FEEDBACKLINK_HREF
+              value: {{ . | quote }}
+            {{- end }}
+            {{- with .Values.services.web.config.feedbackLink.ariaLabel }}
+            - name: WEB_OPTION_FEEDBACKLINK_ARIALABEL
+              value: {{ . | quote }}
+            {{- end }}
+            {{- with .Values.services.web.config.feedbackLink.description }}
+            - name: WEB_OPTION_FEEDBACKLINK_DESCRIPTION
+              value: {{ . | quote }}
+            {{- end }}
+            {{- end }}
+
+            - name: WEB_OPTION_TOKEN_STORAGE_LOCAL
+              value: {{ .Values.services.web.config.tokenStorageLocal.enabled | quote }}
+
             - name: WEB_JWT_SECRET
               valueFrom:
                 secretKeyRef:
                   name: {{ include "secrets.jwtSecret" . }}
                   key: jwt-secret
+
+            {{- include "ocis.caEnv" $ | nindent 12}}
 
           {{- include "ocis.livenessProbe" . | nindent 10 }}
 
@@ -177,8 +214,15 @@ spec:
             - name: theme-assets
               mountPath: "/var/lib/ocis/web/assets/themes/{{ .Values.services.web.config.theme.themeNameConfigRefs }}/assets"
             {{- end }}
+            {{- if .Values.configRefs.webCoreIconsConfigRef }}
+            - name: core-icon-assets
+              mountPath: "/var/lib/ocis/web/assets/core/icons"
+            {{- end }}
+            - name: apps
+              mountPath: /var/lib/ocis/web/assets/apps
             - name: {{ include "ocis.persistence.dataVolumeName" . }}
               mountPath: /var/lib/ocis
+            {{- include "ocis.caPath" $ | nindent 12}}
 
       {{- include "ocis.imagePullSecrets" $ | nindent 6 }}
       volumes:
@@ -195,4 +239,12 @@ spec:
           configMap:
             name: {{ . | quote }}
         {{- end }}
+        {{- with .Values.configRefs.webCoreIconsConfigRef }}
+        - name: core-icon-assets
+          configMap:
+            name: {{ . | quote }}
+        {{- end }}
+        - name: apps
+          emptyDir: {}
+        {{- include "ocis.caVolume" $ | nindent 8}}
         {{- include "ocis.persistence.dataVolume" . | nindent 8 }}

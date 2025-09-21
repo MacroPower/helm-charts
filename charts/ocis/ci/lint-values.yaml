@@ -1,0 +1,289 @@
+---
+ingress:
+  enabled: true
+  ingressClassName: some-ingress
+  annotations:
+    kubernetes.io/ingress.class: some-ingress
+    kubernetes.io/tls-acme: "true"
+  labels:
+    label1: lorem
+    label2: ipsum
+
+  tls:
+    - secretName: chart-example-tls
+      hosts:
+        - ocis.owncloud.test
+
+externalDomain: ocis.owncloud.test
+
+backup:
+  configMapLabels:
+    backup.test/include: "true"
+    backup.test/configmap: "test"
+  secretLabels:
+    backup.test/include: "true"
+    backup.test/secret: "test"
+  pvcLabels:
+    backup.test/include: "true"
+    backup.test/pvc: "test"
+
+image:
+  pullSecrets:
+    - name: some-pull-secret
+
+http:
+  cors:
+    allow_origins:
+      - https://integration.owncloud.test
+
+nodeSelector:
+  kubernetes.io/arch: "amd64"
+hostAliases:
+  - ip: "192.168.4.2"
+    hostnames:
+      - "example.kube.owncloud.test"
+priorityClassName: ocis-middle-priority
+jobPriorityClassName: ocis-job-middle-priority
+features:
+  emailNotifications:
+    enabled: true
+  appsIntegration:
+    enabled: true
+    wopiIntegration:
+      officeSuites:
+        - name: Collabora
+          enabled: true
+          uri: https://collabora.owncloud.test
+          iconURI: https://collabora.owncloud.test/favicon.ico
+          insecure: false
+          ingress:
+            enabled: true
+            domain: collabora-wopi.owncloud.test
+            ingressClassName: some-ingress
+            annotations:
+              kubernetes.io/ingress.class: some-ingress
+              kubernetes.io/tls-acme: "true"
+            labels:
+              label1: lorem
+              label2: ipsum
+            tls:
+              - secretName: chart-example-tls
+                hosts:
+                  - collabora-wopi.owncloud.test
+        - name: OnlyOffice
+          enabled: true
+          uri: https://onlyoffice.owncloud.test
+          iconURI: https://onlyoffice.owncloud.test/web-apps/apps/documenteditor/main/resources/img/favicon.ico
+          insecure: false
+          ingress:
+            enabled: true
+            domain: onlyoffice-wopi.owncloud.test
+            ingressClassName: some-ingress
+            annotations:
+              kubernetes.io/ingress.class: some-ingress
+              kubernetes.io/tls-acme: "true"
+            labels:
+              label1: lorem
+              label2: ipsum
+            tls:
+              - secretName: chart-example-tls
+                hosts:
+                  - onlyoffice-wopi.owncloud.test
+    mimetypes:
+      - mime_type: application/vnd.oasis.opendocument.text
+        extension: odt
+        name: OpenDocument
+        description: OpenDocument text document
+        icon: ""
+        default_app: ""
+        allow_creation: true
+  virusscan:
+    enabled: true
+    infectedFileHandling: abort
+    maxScanSize: 50000KB
+    icap:
+      timeout: 300
+      url: icap://clamav.clamav.svc:1344
+      service: avscan
+  policies:
+    enabled: true
+  ocm:
+    enabled: true
+  quotas:
+    max: "250000000000"
+    default: "0"
+    roles:
+      d7beeea8-8ff4-406b-8fb6-ab2dd81e6b11: 2000000000
+      71881883-1768-46bd-a24d-a356a2afdf7f: 100000000000
+      2aadd357-682c-406b-8874-293091995fdd: 100000000000
+
+extraLabels:
+  extra1: lorem
+  extra2: ipsum
+
+podDisruptionBudget:
+  maxUnavailable: 1
+
+autoscaling:
+  enabled: true
+  minReplicas: 3
+  maxReplicas: 10
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 60
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: 60
+
+resources:
+  limits:
+    cpu: 100m
+    memory: 128Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+services:
+  storagesystem:
+    persistence:
+      enabled: true
+      storageClassName: default-storage
+      accessModes:
+        - ReadWriteMany
+      size: 5Gi
+      annotations:
+        anno-1: test
+      finalizers:
+        - kubernetes.io/pvc-protection
+      selectorLabels:
+        selector1: foobar
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: topology.kubernetes.io/zone
+                  operator: In
+                  values:
+                    - eu-east-1
+                    - eu-west-1
+      podAntiAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                    - storagesystem
+            topologyKey: "kubernetes.io/hostname"
+
+  storageusers:
+    podDisruptionBudget:
+      maxUnavailable: 1
+    storageBackend:
+      driver: ocis
+    persistence:
+      enabled: true
+      storageClassName: default-storage
+      accessModes:
+        - ReadWriteMany
+      size: 50Gi
+      annotations:
+        anno-1: test
+      finalizers:
+        - kubernetes.io/pvc-protection
+      selectorLabels: {}
+    jobResources:
+      limits:
+        cpu: 100m
+        memory: 128Mi
+      requests:
+        cpu: 100m
+        memory: 128Mi
+    maintenance:
+      cleanUpExpiredUploads:
+        enabled: true
+        timezone: Europe/Berlin
+      purgeExpiredTrashBinItems:
+        enabled: true
+        timezone: Etc/GMT-5
+      restartPostprocessing:
+        enabled: true
+        timezone: GMT+0
+
+    affinity:
+      podAntiAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 1
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                      - storageusers
+              topologyKey: "kubernetes.io/hostname"
+
+  thumbnails:
+    persistence:
+      enabled: true
+      storageClassName: default-storage
+      accessModes:
+        - ReadWriteMany
+      size: 10Gi
+      annotations:
+        anno-1: test
+      finalizers: []
+      selectorLabels:
+        selector1: foobar
+    jobResources:
+      limits:
+        cpu: 100m
+        memory: 128Mi
+      requests:
+        cpu: 100m
+        memory: 128Mi
+    jobNodeSelector:
+      kubernetes.io/arch: "arm64"
+    maintenance:
+      cleanUpOldThumbnails:
+        enabled: true
+    podDisruptionBudget:
+      maxUnavailable: 100%
+
+  ocm:
+    persistence:
+      enabled: true
+      storageClassName: default-storage
+      accessModes:
+        - ReadWriteOnce
+      size: 10Gi
+      annotations:
+        anno-1: test
+      finalizers: []
+      selectorLabels:
+        selector1: foobar
+
+  notifications:
+    jobResources:
+      limits:
+        cpu: 123m
+        memory: 123Mi
+      requests:
+        cpu: 123m
+        memory: 123Mi
+
+secretRefs:
+  notificationsSmtpSecretRef: "smtp-secret"
+  globalNotificationsSecretRef: "global-notification-secret"
+
+customCAChain:
+  enabled: true
+  existingConfigMap: myCAchain
