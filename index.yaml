@@ -348,6 +348,27 @@ entries:
     version: 1.0.0
   ocis:
   - apiVersion: v2
+    appVersion: 7.1.4
+    created: "2025-09-21T15:21:32.884306159Z"
+    description: ownCloud Infinite Scale (oCIS) Helm chart
+    digest: 80a44eddd7d0b1c3e6c33c4d52c694d797a6cfa57ed2ed5db534e4ab4bd97bb9
+    keywords:
+    - owncloud
+    - ocis
+    maintainers:
+    - email: devops@owncloud.com
+      name: ownCloud GmbH
+      url: https://owncloud.com
+    name: ocis
+    sources:
+    - https://github.com/owncloud/ocis-charts
+    - https://github.com/owncloud/ocis
+    - https://github.com/cs3org/reva
+    type: application
+    urls:
+    - https://github.com/MacroPower/helm-charts/releases/download/ocis-2.0.0/ocis-2.0.0.tgz
+    version: 2.0.0
+  - apiVersion: v2
     appVersion: 5.0.5
     created: "2024-06-11T03:21:24.791572438Z"
     description: ownCloud Infinite Scale (oCIS) Helm chart
@@ -1153,4 +1174,4 @@ entries:
     urls:
     - https://github.com/MacroPower/helm-charts/releases/download/wireguard-operator-0.1.0/wireguard-operator-0.1.0.tgz
     version: 0.1.0
-generated: "2024-06-11T03:21:24.791837952Z"
+generated: "2025-09-21T15:21:32.884386419Z"
