@@ -452,6 +452,29 @@ entries:
     urls:
     - https://github.com/MacroPower/helm-charts/releases/download/ocis-0.5.0/ocis-0.5.0.tgz
     version: 0.5.0
+  opencloud:
+  - apiVersion: v2
+    appVersion: latest
+    created: "2025-09-22T22:04:56.898627665Z"
+    description: OpenCloud Helm community chart
+    digest: 75eae4808d52dd7be6ebf520da726e09ed0d1cc862a2905ef6ed13859b9eb9e2
+    keywords:
+    - opencloud
+    - owncloud
+    - ocis
+    maintainers:
+    - email: info@opencloud.eu
+      name: OpenCloud EU
+      url: https://opencloud.eu
+    name: opencloud
+    sources:
+    - https://github.com/opencloud-eu/opencloud
+    - https://github.com/owncloud/ocis
+    - https://github.com/cs3org/reva
+    type: application
+    urls:
+    - https://github.com/MacroPower/helm-charts/releases/download/opencloud-0.2.3/opencloud-0.2.3.tgz
+    version: 0.2.3
   osrs-ge-exporter:
   - annotations:
       artifacthub.io/links: |
@@ -1174,4 +1197,4 @@ entries:
     urls:
     - https://github.com/MacroPower/helm-charts/releases/download/wireguard-operator-0.1.0/wireguard-operator-0.1.0.tgz
     version: 0.1.0
-generated: "2025-09-21T15:21:32.884386419Z"
+generated: "2025-09-22T22:04:56.898714177Z"
